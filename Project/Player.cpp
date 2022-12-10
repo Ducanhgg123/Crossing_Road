@@ -1,10 +1,20 @@
 #include "Player.h"
+Player::Player()
+{
+	int x = 0; 
+	int y = 0; 
+	shape.resize(3); 
+	shape[0] = " o";
+	shape[1] = "/0\\";
+	shape[2] = "/ \\";
+}
 Player::Player(int OFFSET_X, int OFFSET_Y) {
 	this->OFFSET_X = OFFSET_X;
 	this->OFFSET_Y = OFFSET_Y;
-	shape[0] = "  (\")";
-	shape[1] = " \\/0\\G";
-	shape[2] = " _/ \\_";
+	shape.resize(3); 
+	shape[0] = " o";
+	shape[1] = "/0\\";
+	shape[2] = "/ \\";
 	status = 1;
 	for (int i = 0; i < 3; i++)
 		for (int j = 0; j < shape[i].size(); j++)
@@ -12,6 +22,10 @@ Player::Player(int OFFSET_X, int OFFSET_Y) {
 			point temp(OFFSET_X +  j, OFFSET_Y + i, shape[i][j]);
 			p.push_back(temp);
 		}
+}
+vector<string> Player::getPlayer()
+{
+	return shape; 
 }
 void Player::draw() {
 	for (int i = 0; i < p.size(); i++) {
@@ -43,6 +57,22 @@ bool Player::isAlive() {
 }
 void Player::isHit() {
 	status = 0;
+}
+void Player::up()
+{
+	y--; 
+}
+void Player::down()
+{
+	y++; 
+}
+void Player::left()
+{
+	x--; 
+}
+void Player::right()
+{
+	x++; 
 }
 vector<point> Player::getListPoint() {
 	return p;

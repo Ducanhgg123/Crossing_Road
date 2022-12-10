@@ -4,6 +4,23 @@
 #include "Truck.h"
 #include "Player.h"
 #include "Obstacle.h"
+#include<map>
+
+#define KEY_ESC 27
+#define DEFAULT_COLOR 10
+
+#define KEY_DOWN 80
+#define KEY_UP 72
+#define KEY_ESC 27
+#define KEY_ENTER 13
+
+#define DOWN_BLACK_PIECE char(220)
+#define UP_BLACK_PIECE char(223)
+#define VERTICAL_BLACK_PIECE char(219)
+
+#define WIDTH 50
+#define HEIGHT 50
+
 static class Game {
 public:
 	static int level;
@@ -14,46 +31,29 @@ public:
 	static deque<Truck> truckLine;
 	static Player player;
 	static bool isRunning;
+
 public:
-	static bool checkHit() {
-		for (int i = 0; i < carLine.size(); i++) {
-			if (isColide(player, carLine[i]))
-				return true;
-		}
-		for (int i = 0; i < truckLine.size(); i++) {
-			if (isColide(player, truckLine[i]))
-				return true;
-		}
-		for (int i = 0; i < dogLine.size(); i++) {
-			if (isColide(player, dogLine[i]))
-				return true;
-		}
-		return false;
-	}
-	static void isHit() {
-		if (checkHit()) {
-			exitGame();
-		}
-	}
-	static void exitGame() {
-		isRunning = false;
-	}
-	static bool isColide(Player player, Obstacle obstacle) {
-		vector<point> listPointPlayer = player.getListPoint();
-		vector<point> listPointObstacle = obstacle.getListPoint();
-		for (int i = 0; i < listPointPlayer.size(); i++)
-			for (int j = 0; j < listPointObstacle.size(); j++) {
-				if (listPointPlayer[i].getX() == listPointObstacle[j].getX() && listPointPlayer[i].getY() == listPointObstacle[j].getY())
-					return true;
-			}
-		return false;
-	}
+	Game(); 
+	static bool checkHit(); 
+	static void isHit(); 
+	void showConsoleCursor(bool showFlag); 
+	static void exitGame(); 
+	static bool isColide(Player player, Obstacle obstacle); 
+	static void removeCursor(); 
+	static void FixConsoleWindow();
+	static void SetWindowSize(SHORT width, SHORT height);
+	static void gotoOxy(int x, int y);
+	static void clrscr();
+	static void txtColor(int color); 
+	void drawBorder();
+	void startGame();
+	void settingGame();
+	void drawMenu();
+	void menu(int active, int color); 
+	void drawInfoMenu(); 
+	void drawLoserScreen(); 
+	void drawLeaderboardScreen(); 
 };
-int Game::level = 1;
-int Game::startLine = 10;
-int Game::endLine = 130;
-deque<Car> Game::carLine = deque<Car>();
-deque<Dog> Game::dogLine = deque<Dog>();
-deque<Truck> Game::truckLine = deque<Truck>();
-Player Game::player = Player(65, 30);
-bool Game::isRunning = 1;
+
+
+
