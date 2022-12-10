@@ -5,6 +5,9 @@
 #include "Player.h"
 #include "Obstacle.h"
 #include<map>
+#include<iostream>
+using namespace std; 
+
 
 #define KEY_ESC 27
 #define DEFAULT_COLOR 10
@@ -17,6 +20,7 @@
 #define DOWN_BLACK_PIECE char(220)
 #define UP_BLACK_PIECE char(223)
 #define VERTICAL_BLACK_PIECE char(219)
+#define BLOCK char(254)
 
 #define WIDTH 50
 #define HEIGHT 50
@@ -31,6 +35,8 @@ public:
 	static deque<Truck> truckLine;
 	static Player player;
 	static bool isRunning;
+	static bool waiting;
+	static mutex m;
 
 public:
 	Game(); 

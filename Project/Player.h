@@ -4,7 +4,7 @@ class Player {
 private:
 	int OFFSET_X;
 	int OFFSET_Y;
-	vector<string> shape;
+	string shape[3];
 	vector<point> p;
 	bool status;
 public:

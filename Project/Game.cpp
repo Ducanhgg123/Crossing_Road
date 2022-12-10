@@ -1,7 +1,17 @@
 #include "Game.h"
+bool Game::waiting = 0;
+mutex Game::m;
 
-//Game::Game() {}
-
+Game::Game() {
+	level = 1;
+	startLine = 10;
+	endLine = 130;
+	carLine = deque<Car>();
+	dogLine = deque<Dog>();
+	truckLine = deque<Truck>();
+	player = Player(65, 30);
+	isRunning = 1;
+}
 void Game::FixConsoleWindow()
 {
 	HWND hwnd = GetConsoleWindow();
@@ -60,32 +70,34 @@ void Game::drawBorder()
 	int height = 30;
 	int offsetX = 0;
 	int offsetY = 0;
-	removeCursor();
-	while (1) {
-		char c = _getch(); 
-		for (int i = 0; i < width; i++) {
-			Game::gotoOxy(offsetX + i, offsetY);
-			cout << "*";
+	for (int i = 0; i < height; i++) {
+		if (i == 0) {
+			Game::gotoOxy(offsetX, offsetY + i - 1);
+			cout << char(220);
+			continue;
 		}
-		for (int i = 0; i < height; i++) {
-			Game::gotoOxy(offsetX + width - 1, offsetY + i);
-			cout << "*";
-		}
-		for (int i = 0; i < width; i++) {
-			Game::gotoOxy(offsetX + width - i - 1, offsetY + height - 1);
-			cout << "*";
-		}
-		for (int i = 0; i < height; i++) {
-			Game::gotoOxy(offsetX, offsetY + height - 1 - i);
-			cout << "*";
-		}
-		drawInfoMenu(); 
+		Game::gotoOxy(offsetX, offsetY + i);
+		cout << char(219);
 	}
+	for (int i = 0; i < width; i++) {
+		Game::gotoOxy(offsetX + i, offsetY - 1);
+		cout << char(220);
+	}
+	for (int i = 0; i < height; i++) {
+		Game::gotoOxy(offsetX + width, offsetY + i);
+		cout << char(219);
+	}
+	for (int i = 0; i < width; i++) {
+		Game::gotoOxy(offsetX + 1 + i, offsetY);
+		cout << char(220);
+	}
+	drawInfoMenu();
+
+	while (1) {};
 }
 void Game::startGame()
 {
-	gotoOxy(10, 5);
-	cout << "Start game";
+	drawBorder();  
 }
 void Game::settingGame()
 {
@@ -94,10 +106,10 @@ void Game::settingGame()
 }
 void Game::drawMenu()
 {
-	removeCursor();
 	menu(0, 10);
 	int active = 0;
-	while (1) {
+	bool isLoading = true; 
+	while (isLoading) {
 		char c = _getch();
 		if (c == KEY_UP || c == 'w') {
 			active--;
@@ -112,16 +124,20 @@ void Game::drawMenu()
 		}
 		if (c == KEY_ENTER) {
 			if (active == 1) {
-				clrscr();
-				Game::gotoOxy(40, 40);
-				Game::txtColor(DEFAULT_COLOR);
+				isLoading = true; 
+				system("cls");
+				/*Game::gotoOxy(40, 40);*/
+				/*Game::txtColor(DEFAULT_COLOR);*/
 				startGame();
+				break; 
 			}
 			if (active == 2) {
+				isLoading = true; 
 				clrscr();
 				Game::gotoOxy(40, 40);
 				Game::txtColor(DEFAULT_COLOR);
 				settingGame();
+				break; 
 			}
 			if (active == 3) {
 				exit(1);
@@ -215,17 +231,25 @@ void Game::drawLeaderboardScreen()
 	gotoOxy(50, 5); 
 	cout << "All players: "; 
 	for (auto& el : players) {
-		gotoOxy(50, 5 + el.first); 
-		cout << el.first << "." << el.second; 
-		cout << endl; 
+		gotoOxy(50, 5 + el.first);
+		cout << el.first << "." << el.second;
 	}
 	while (1) {
-		char c = _getch(); 
-			gotoOxy(0, 0); 
-			auto it = players.find(int(c) - '0'); 
-				if (it != players.end()) {
-					cout << it->second; 
-				} 
+		txtColor(1); 
+		char c = _getch();
+		auto it = players.find(int(c) - '0'); 
+		if (it != players.end()) {
+			gotoOxy(50, 5 + it->first); 
+			txtColor(240); 
+			cout << it->first << "." << it->second;
+			txtColor(7); 
+			for (auto p = players.begin(); p != players.end(); p++) {
+				if (p != it) {
+					gotoOxy(50, 5 + p->first);
+					cout << p->first << "." << p->second;
+				}
+			}
+		}
 	}
 }
 
