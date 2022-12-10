@@ -4,6 +4,7 @@
 #include "Truck.h"
 #include "Player.h"
 #include "Obstacle.h"
+#include "Line.h"
 static class Game {
 public:
 	static int level;

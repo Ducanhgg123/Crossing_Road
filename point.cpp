@@ -34,3 +34,9 @@ int point::getY() {
 char point::getC() {
 	return c;
 }
+
+void textColor(int x)
+{
+	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(h, x);
+}

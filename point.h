@@ -17,3 +17,4 @@ public:
 	char getC();
 };
 void goToXY(int x, int y);
+void textColor(int x);

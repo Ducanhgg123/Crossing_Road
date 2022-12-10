@@ -1,3 +1,4 @@
+#pragma once
 #include "lib.h"
 #include "Game.h"
 void showConsoleCursor(bool showFlag)
@@ -198,14 +199,11 @@ void TextColor(int color)
 //	}
 //};
 
-void ThreadT1()
+void ThreadCar()
 {
 	while (Game::isRunning)
 	{
-		Sleep(30);
-		/*if (Game::waiting)
-			continue;*/
-		//Car
+		Sleep(10);
 		if (Game::carLine.size() == 0)
 		{
 			Game::carLine.push_back(Car(Game::startLine, 10, 1));
@@ -221,7 +219,13 @@ void ThreadT1()
 			Game::carLine[0].undraw();
 			Game::carLine.pop_front();
 		}
-
+	}
+}
+void ThreadTruck()
+{
+	while (Game::isRunning)
+	{
+		Sleep(10);
 		//Truck
 		if (Game::truckLine.size() == 0)
 		{
@@ -238,6 +242,18 @@ void ThreadT1()
 			Game::truckLine[0].undraw();
 			Game::truckLine.pop_front();
 		}
+		if (Game::checkHit()) {
+			Game::exitGame();
+			cout << "Hitted";
+		}
+	}
+}
+void ThreadDog()
+{
+
+	while (Game::isRunning)
+	{
+		Sleep(10);
 		//Dog
 		if (Game::dogLine.size() == 0 && !Game::waiting)
 		{
@@ -258,37 +274,24 @@ void ThreadT1()
 			Game::exitGame();
 			cout << "Hitted";
 		}
-		//Snowman
-		/*if (s.size() == 0)
-		{
-			s.push_back(Snowman(180, 25, -1));
-		}
-		else if (s.size() < 3 && s[s.size() - 1].getDistanceFromStart() > s[s.size() - 1].getDistance())
-			s.push_back(Snowman(180, 25, -1));
-		for (int i = 0; i < s.size(); i++) {
-			s[i].undrawBack();
-			s[i].move();
-			s[i].draw();
-		}
-		if (s[0].reachEndPoint(10)) {
-			s[0].undraw();
-			s.pop_front();
-		}*/
-	}
-
-}
-void t2() {
-	while (Game::isRunning) {
-
 	}
 }
+//void ThreadPlayer()
+//{
+//	while (Game::isRunning)
+//	{
+//		
+//	}
+//}
 int main()
 {
 	fixConsoleWindow();
 
-	thread t1(ThreadT1);
-	Game game;
+	/*thread t1(ThreadCar);
+	thread t2(ThreadTruck);
+	thread t3(ThreadDog);
 	Game::player.draw();
+	TrafficLight tmp(0, 0);
 	while (Game::isRunning)
 	{
 		if (Game::checkHit()) {
@@ -310,5 +313,21 @@ int main()
 	}
 	if (t1.joinable())
 		t1.join();
+	if (t2.joinable())
+		t2.join();
+	if (t3.joinable())
+		t3.join();*/
+	Line line;
+
+	while (1)
+	{
+		//Sleep(10);
+		if (line.getLineSize() == 0)
+			line.insertNewObstacle(new Car(Game::startLine, 10, 1));
+		else if (line.getLineSize() < 4 && line.getObstacleAt(line.getLineSize() - 1)->getDistanceFromStart() > line.getObstacleAt(line.getLineSize() - 1)->getDistance())
+			line.insertNewObstacle(new Car(Game::startLine, 10, 1));
+		line.move();
+		line.deleteReachEndPoint();
+	}
 	return 0;
 }
