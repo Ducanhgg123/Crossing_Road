@@ -1,4 +1,5 @@
 #include "Dog.h"
+#include "Game.h"
 Dog::Dog(int OFFSET_X, int OFFSET_Y, int direction)
 {
 	this->OFFSET_X = OFFSET_X;
@@ -28,4 +29,14 @@ Dog::Dog(const Dog& dog) {
 }
 Obstacle* Dog::clone() {
 	return new Dog(*this);
+}
+void ThreadDogSound() {
+	while (Game::isRunning) {
+		PlaySound(TEXT("mixkit-dog-barking-twice-1.wav"), NULL, SND_ASYNC);
+		Sleep(2000);
+	}
+}
+void Dog::makeSound() {
+	thread sound(ThreadDogSound);
+	sound.detach();
 }

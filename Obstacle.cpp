@@ -58,3 +58,4 @@ vector<point> Obstacle::getListPoint() {
 Obstacle* Obstacle::clone() {
 	return new Obstacle(*this);
 }
+void Obstacle::makeSound(){}

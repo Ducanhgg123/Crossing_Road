@@ -4,14 +4,15 @@
 #include "Truck.h"
 #include "Player.h"
 #include "Obstacle.h"
+#include "Line.h"
 static class Game {
 public:
 	static int level;
 	static int startLine;
 	static int endLine;
-	static deque<Car> carLine;
-	static deque<Dog> dogLine;
-	static deque<Truck> truckLine;
+	static Line carLine;
+	static Line dogLine;
+	static Line truckLine;
 	static Player player;
 	static bool isRunning;
 	static bool waiting;

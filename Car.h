@@ -7,4 +7,5 @@ public:
 	Car(const Car&);
 	Car(int, int, int);
 	Obstacle* clone();
+	void makeSound();
 };

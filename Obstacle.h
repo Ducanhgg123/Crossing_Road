@@ -18,4 +18,5 @@ public:
 	int getDistance();
 	vector<point> getListPoint();
 	virtual Obstacle* clone();
+	virtual void makeSound();
 };

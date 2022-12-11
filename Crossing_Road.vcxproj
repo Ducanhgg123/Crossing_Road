@@ -120,6 +120,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,10 +144,12 @@
     <ClCompile Include="Crossing_Road.cpp" />
     <ClCompile Include="Dog.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Line.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="point.cpp" />
     <ClCompile Include="Snowman.cpp" />
+    <ClCompile Include="TrafficLight.cpp" />
     <ClCompile Include="Truck.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -154,10 +157,12 @@
     <ClInclude Include="Dog.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="lib.h" />
+    <ClInclude Include="Line.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="Snowman.h" />
+    <ClInclude Include="TrafficLight.h" />
     <ClInclude Include="Truck.h" />
   </ItemGroup>
   <ItemGroup>

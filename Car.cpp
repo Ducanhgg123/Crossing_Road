@@ -1,4 +1,5 @@
 #include "Car.h"
+#include "Game.h"
 Car::Car(int OFFSET_X, int OFFSET_Y, int direction)
 {
 	this->OFFSET_X = OFFSET_X;
@@ -28,4 +29,14 @@ Car::Car(const Car& car) {
 }
 Obstacle* Car::clone() {
 	return new Car(*this);
+}
+void ThreadCarSound() {
+	while (Game::isRunning) {
+		PlaySound(TEXT("mixkit-car-horn-718.wav"), NULL, SND_ASYNC);
+		Sleep(2000);
+	}
+}
+void Car::makeSound() {
+	thread sound(ThreadCarSound);
+	sound.detach();
 }

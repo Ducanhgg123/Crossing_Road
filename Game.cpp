@@ -1,10 +1,10 @@
 #include "Game.h"
 int Game::level = 1;
-int Game::startLine = 10;
+int Game::startLine = 20;
 int Game::endLine = 130;
-deque<Car> Game::carLine = deque<Car>();
-deque<Dog> Game::dogLine = deque<Dog>();
-deque<Truck> Game::truckLine = deque<Truck>();
+Line Game::carLine = Line(Game::endLine+10,10);
+Line Game::truckLine = Line(Game::startLine-10,16);
+Line Game::dogLine = Line(Game::endLine+10,24);
 Player Game::player = Player(65, 30);
 bool Game::isRunning = 1;
 bool Game::waiting = 0;
@@ -13,9 +13,9 @@ Game::Game() {
 	level = 1;
 	startLine = 10;
 	endLine = 130;
-	carLine = deque<Car>();
-	dogLine = deque<Dog>();
-	truckLine = deque<Truck>();
+	carLine = Line();
+	truckLine = Line();
+	dogLine = Line();
 	player = Player(65,30);
 	isRunning = 1;
 }
@@ -30,31 +30,35 @@ bool Game::isColide(Player player, Obstacle*& obstacle) {
 	return false;
 }
 bool Game::checkHit() {
-	for (int i = 0; i < carLine.size(); i++) {
-		Obstacle* o = carLine[i].clone();
-		if (isColide(player, o)) {
-			delete o;
-			return true;
+	deque<Obstacle*> listCar = carLine.getLine();
+	deque<Obstacle*> listTruck = truckLine.getLine();
+	deque<Obstacle*> listDog = dogLine.getLine();
+	bool ok = false;
+	for (int i = 0; i < listCar.size() && ok==false; i++) {
+		if (isColide(player, listCar[i])) {
+			ok=true;
+			break;
 		}
-		delete o;
 	}
-	for (int i = 0; i < truckLine.size(); i++) {
-		Obstacle* o = truckLine[i].clone();
-		if (isColide(player, o)) {
-			delete o;
-			return true;
+	for (int i = 0; i < listTruck.size() && ok == false; i++) {
+		if (isColide(player, listTruck[i])) {
+			ok = true;
+			break;
 		}
-		delete o;
 	}
-	for (int i = 0; i < dogLine.size(); i++) {
-		Obstacle* o = dogLine[i].clone();
-		if (isColide(player, o)) {
-			delete o;
-			return true;
+	for (int i = 0; i < listDog.size() && ok==false; i++) {
+		if (isColide(player, listDog[i])) {
+			ok = true;
+			break;
 		}
-		delete o;
 	}
-	return false;
+	for (int i = 0; i < listCar.size(); i++)
+		delete listCar[i];
+	for (int i = 0; i < listTruck.size(); i++)
+		delete listTruck[i];
+	for (int i = 0; i < listDog.size(); i++)
+		delete listDog[i];
+	return ok;
 }
 void Game::isHit() {
 	if (checkHit()) {

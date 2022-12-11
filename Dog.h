@@ -7,4 +7,5 @@ public:
 	Dog(const Dog&);
 	Dog(int, int, int);
 	Obstacle* clone();
+	void makeSound();
 };
