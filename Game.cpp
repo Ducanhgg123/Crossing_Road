@@ -68,3 +68,51 @@ void Game::isHit() {
 void Game::exitGame() {
 	isRunning = false;
 }
+void Game::drawRectangle(int offset_X, int offset_Y, int width, int height,int color)
+{
+	// Delete everything in the table
+	for (int i = offset_X; i < offset_X + width; i++)
+		for (int j = offset_Y; j < offset_Y + height; j++) {
+			Game::m.lock();
+			goToXY(i, j);
+			cout << " ";
+			Game::m.unlock();
+		}
+			
+	// Draw left
+	for (int i = offset_Y; i < offset_Y + height; i++) {
+		Game::m.lock();
+		TextColor(color);
+		goToXY(offset_X, i);
+		cout << char(219);
+		TextColor(colorDefault);
+		Game::m.unlock();
+	}
+	// Draw lower
+	for (int i = offset_X; i < offset_X + width; i++) {
+		Game::m.lock();
+		TextColor(color);
+		goToXY(i, offset_Y+height-1);
+		cout << char(219);
+		TextColor(colorDefault);
+		Game::m.unlock();
+	}
+	// Draw right
+	for (int i = offset_Y + height - 1; i >= offset_Y; i--) {
+		Game::m.lock();
+		TextColor(color);
+		goToXY(offset_X+width,i);
+		cout << char(219);
+		TextColor(colorDefault);
+		Game::m.unlock();
+	}
+	// Draw upper
+	for (int i = offset_X + width - 1; i >= offset_X; i--) {
+		Game::m.lock();
+		TextColor(color);
+		goToXY(i, offset_Y);
+		cout << char(219);
+		TextColor(colorDefault);
+		Game::m.unlock();
+	}
+}

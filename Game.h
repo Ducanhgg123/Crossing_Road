@@ -23,4 +23,5 @@ public:
 	static void isHit();
 	static void exitGame();
 	static bool isColide(Player, Obstacle*&);
+	static void drawRectangle(int, int, int, int,int);
 };

@@ -24,11 +24,10 @@ void fixConsoleWindow()
 	showConsoleCursor(false);
 
 }
-void TextColor(int color)
+
+void ConsoleColor(int c = 240)
 {
-	HANDLE mau;
-	mau = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(mau, color);
+
 }
 //void goToXY(int x, int y)
 //{
@@ -286,9 +285,10 @@ void ThreadDog()
 int main()
 {
 	TextColor(240);
+	TextColor(colorDefault);
 	fixConsoleWindow();
 	
-	thread t1(ThreadCar);
+	/*thread t1(ThreadCar);
 	thread t2(ThreadTruck);
 	thread t3(ThreadDog);
 	Game::player.draw();
@@ -326,6 +326,9 @@ int main()
 	if (t2.joinable())
 		t2.join();
 	if (t3.joinable())
-		t3.join();
+		t3.join();*/
+	Game::drawRectangle(0, 0, 50, 20,colorRed);
+	Game::drawRectangle(10, 10, 30, 5, colorGreen);
+	while (true);
 	return 0;
 }

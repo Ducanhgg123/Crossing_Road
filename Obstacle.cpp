@@ -6,12 +6,9 @@ void Obstacle::move() {
 	}
 }
 bool Obstacle::reachEndPoint(int x) {
-	int back[3];
-	back[0] = 0;
-	back[1] = 0 + shape[0].size();
-	back[2] = back[1] + shape[1].size();
-	for (int i = 0; i < 3; i++) {
-		if (p[back[i]].getX() == x)
+	for (int i = 0; i < p.size(); i++) {
+		point tmp = p[i];
+		if (p[i].getX() == x)
 			return true;
 	}
 	return false;

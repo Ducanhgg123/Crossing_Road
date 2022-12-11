@@ -50,17 +50,17 @@ void TrafficLight::changeColor()
 	if (status == 0)
 	{
 		Game::m.lock();
-		textColor(colorRed);
+		TextColor(colorRed);
 		draw();
-		textColor(colorDefault);
+		TextColor(colorDefault);
 		Game::m.unlock();
 	}
 	else
 	{
 		Game::m.lock();
-		textColor(colorGreen);
+		TextColor(colorGreen);
 		draw();
-		textColor(colorDefault);
+		TextColor(colorDefault);
 		Game::m.unlock();
 	}
 }
