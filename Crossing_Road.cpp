@@ -198,99 +198,121 @@ void ConsoleColor(int c = 240)
 //	}
 //};
 
-void ThreadCar()
-{
-	if (Game::carLine.getLineSize() == 0)
-		Game::carLine.insertNewObstacle(new Car(Game::startLine, 10, 1));
-	Game::carLine.makeSound();
-	while (Game::isRunning)
-	{
-		Sleep(10);
-		Game::carLine.updateTrafficLight();
-		if (Game::carLine.isRed())
-			Sleep(1000);
-		if (Game::carLine.getLineSize() == 0)
-			Game::carLine.insertNewObstacle(new Car(Game::startLine, 10, 1));
-		else if (Game::carLine.getLineSize() < 4 && Game::carLine.canAddNewObstacle())
-			Game::carLine.insertNewObstacle(new Car(Game::startLine, 10, 1));
-		Game::carLine.move();
-		Game::carLine.deleteReachEndPoint(Game::endLine);
-		if (Game::checkHit()) {
-			Game::exitGame();
-			cout << "Hitted";
-		}
-	}
-}
-void ThreadTruck()
-{
-	if (Game::truckLine.getLineSize() == 0)
-		Game::truckLine.insertNewObstacle(new Truck(Game::endLine, 16, -1));
-	Game::truckLine.makeSound();
-	while (Game::isRunning)
-	{
-		Sleep(10);
-		Game::truckLine.updateTrafficLight();
-		if (Game::truckLine.isRed())
-			Sleep(1000);
-		if (Game::truckLine.getLineSize() == 0)
-			Game::truckLine.insertNewObstacle(new Truck(Game::endLine, 16, -1));
-		else if (Game::truckLine.getLineSize() < 3 && Game::truckLine.canAddNewObstacle())
-			Game::truckLine.insertNewObstacle(new Truck(Game::endLine, 16, -1));
-		Game::truckLine.move();
-		Game::truckLine.deleteReachEndPoint(Game::startLine);
-		if (Game::checkHit()) {
-			Game::exitGame();
-			cout << "Hitted";
-		}
-	}
-}
-//void ThreadDogSound() {
-//	while (Game::isRunning) {
-//		PlaySound(TEXT("mixkit-dog-barking-twice-1.wav"), NULL, SND_ASYNC);
-//		Sleep(2000);
-//	}
-//}
-void ThreadDog()
-{
-	if (Game::dogLine.getLineSize() == 0)
-		Game::dogLine.insertNewObstacle(new Dog(Game::startLine, 24, 1));
-	Game::dogLine.makeSound();
-	while (Game::isRunning)
-	{
-		Sleep(10);
-		Game::dogLine.updateTrafficLight();
-		if (Game::dogLine.isRed())
-			Sleep(1000);
-		if (Game::dogLine.getLineSize() == 0)
-			Game::dogLine.insertNewObstacle(new Dog(Game::startLine, 24, 1));
-		else if (Game::dogLine.getLineSize() < 4 && Game::dogLine.canAddNewObstacle())
-			Game::dogLine.insertNewObstacle(new Dog(Game::startLine, 24, 1));
-		Game::dogLine.move();
-		Game::dogLine.deleteReachEndPoint(Game::endLine);
-		if (Game::checkHit()) {
-			Game::exitGame();
-			cout << "Hitted";
-			Game::isRunning = false;
-		}
-	}
-	
-}
-//void ThreadPlayer()
+//void ThreadCar()
 //{
+//	if (Game::carLine.getLineSize() == 0)
+//		Game::carLine.insertNewObstacle(new Car(Game::startLine, distanceBetweenLine + 1, 1));
+//	Game::carLine.makeSound();
 //	while (Game::isRunning)
 //	{
-//		
+//		Sleep(10);
+//		Game::carLine.updateTrafficLight();
+//		if (Game::carLine.isRed())
+//			Sleep(1000);
+//		if (Game::carLine.getLineSize() == 0)
+//			Game::carLine.insertNewObstacle(new Car(Game::startLine, distanceBetweenLine + 1, 1));
+//		else if (Game::carLine.getLineSize() < 4 && Game::carLine.canAddNewObstacle())
+//			Game::carLine.insertNewObstacle(new Car(Game::startLine, distanceBetweenLine  + 1, 1));
+//		Game::carLine.move();
+//		Game::carLine.deleteReachEndPoint(Game::endLine);
+//		if (Game::checkHit()) {
+//			Game::exitGame();
+//			cout << "Hitted";
+//		}
 //	}
+//}
+//void ThreadTruck()
+//{
+//	if (Game::truckLine.getLineSize() == 0)
+//		Game::truckLine.insertNewObstacle(new Truck(Game::endLine, 2*distanceBetweenLine + 1, -1));
+//	Game::truckLine.makeSound();
+//	while (Game::isRunning)
+//	{
+//		Sleep(10);
+//		Game::truckLine.updateTrafficLight();
+//		if (Game::truckLine.isRed())
+//			Sleep(1000);
+//		if (Game::truckLine.getLineSize() == 0)
+//			Game::truckLine.insertNewObstacle(new Truck(Game::endLine, 2*distanceBetweenLine + 1, -1));
+//		else if (Game::truckLine.getLineSize() < 3 && Game::truckLine.canAddNewObstacle())
+//			Game::truckLine.insertNewObstacle(new Truck(Game::endLine, 2 * distanceBetweenLine + 1, -1));
+//		Game::truckLine.move();
+//		Game::truckLine.deleteReachEndPoint(Game::startLine);
+//		if (Game::checkHit()) {
+//			Game::exitGame();
+//			cout << "Hitted";
+//		}
+//	}
+//}
+////void ThreadDogSound() {
+////	while (Game::isRunning) {
+////		PlaySound(TEXT("mixkit-dog-barking-twice-1.wav"), NULL, SND_ASYNC);
+////		Sleep(2000);
+////	}
+////}
+//void ThreadDog()
+//{
+//	if (Game::dogLine.getLineSize() == 0)
+//		Game::dogLine.insertNewObstacle(new Dog(Game::startLine, 3 * distanceBetweenLine + 1, 1));
+//	Game::dogLine.makeSound();
+//	while (Game::isRunning)
+//	{
+//		Sleep(10);
+//		Game::dogLine.updateTrafficLight();
+//		if (Game::dogLine.isRed())
+//			Sleep(1000);
+//		if (Game::dogLine.getLineSize() == 0)
+//			Game::dogLine.insertNewObstacle(new Dog(Game::startLine, 3 * distanceBetweenLine + 1, 1));
+//		else if (Game::dogLine.getLineSize() < 4 && Game::dogLine.canAddNewObstacle())
+//			Game::dogLine.insertNewObstacle(new Dog(Game::startLine, 3 * distanceBetweenLine + 1, 1));
+//		Game::dogLine.move();
+//		Game::dogLine.deleteReachEndPoint(Game::endLine);
+//		if (Game::checkHit()) {
+//			Game::exitGame();
+//			cout << "Hitted";
+//			Game::isRunning = false;
+//		}
+//	}
+//	
+//}
+////void ThreadPlayer()
+////{
+////	while (Game::isRunning)
+////	{
+////		
+////	}
+////}
+//void ThreadCrossLine()
+//{
+//	for (int i = 0; i < 4; i++)
+//	{
+//		Game::crossLine.push_back(CrossLine(Game::startLine, distanceBetweenLine*(i+1), Game::endLine - Game::startLine));
+//	}
+//	while (Game::isRunning)
+//	{
+//		Sleep(10);
+//		for (int i = 0; i < 4; i++)
+//		{
+//			Game::crossLine[i].draw();
+//		}
+//	}
+//}
+//void ThreadMenu() {
+//
 //}
 int main()
 {
-	TextColor(240);
 	TextColor(colorDefault);
 	fixConsoleWindow();
-	
+	Game::gameControl.drawMenu();
+	/*Game::gameControl.drawBorder();*/
+	/*Game::gameControl.drawMenu();*/
+	/*Game::gameControl.drawLeaderboard();*/
+	/*Game::gameControl.drawGameOverPopup();*/
 	/*thread t1(ThreadCar);
 	thread t2(ThreadTruck);
 	thread t3(ThreadDog);
+	thread t4(ThreadCrossLine);
 	Game::player.draw();
 	while (Game::isRunning)
 	{
@@ -304,6 +326,8 @@ int main()
 				t2.join();
 			if (t3.joinable())
 				t3.join();
+			if (t4.joinable())
+				t4.join();
 			return 0;
 		}
 		int temp = toupper(_getch());
@@ -315,6 +339,8 @@ int main()
 				t2.join();
 			if (t3.joinable())
 				t3.join();
+			if (t4.joinable())
+				t4.join();
 			return 0;
 		}
 		Game::player.undraw();
@@ -326,9 +352,9 @@ int main()
 	if (t2.joinable())
 		t2.join();
 	if (t3.joinable())
-		t3.join();*/
-	Game::drawRectangle(0, 0, 50, 20,colorRed);
-	Game::drawRectangle(10, 10, 30, 5, colorGreen);
-	while (true);
+		t3.join();
+	if (t4.joinable())
+		t4.join();*/
+	while (1);
 	return 0;
 }
