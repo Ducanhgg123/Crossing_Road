@@ -1,10 +1,11 @@
 #pragma once
 #include "point.h"
+#include "Shape.h"
 class Player {
 private:
 	int OFFSET_X;
 	int OFFSET_Y;
-	string shape[3];
+	Shape shape;
 	vector<point> p;
 	bool status;
 public:
@@ -16,4 +17,5 @@ public:
 	bool isAlive();
 	void isHit();
 	vector<point> getListPoint();
+	void winAnimation();
 };
