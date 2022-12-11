@@ -62,10 +62,13 @@ public:
 	void drawInfoMenu(); 
 	void drawLoserScreen(); 
 	void drawLeaderboardScreen();
+	void drawMusicSetting(); 
 
 	void saveGame(string name); 
 	void loadGame(); 
 	void getPlayerFromFile(string name); 
+	void getAllPlayersFromFile(); 
+	
 };
 
 

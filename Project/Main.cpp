@@ -1,18 +1,6 @@
 #include "lib.h"
 #include "Game.h"
-#include <cstdlib>
-#include <ctime>
-#include<random>
 
-void randomNumber() {
-	random_device rd; // obtain a random number from hardware
-	mt19937 gen(rd()); // seed the generator
-	uniform_int_distribution<> distr(4, 8); // define the range
-
-	for (int n = 0; n < 10; ++n)
-		cout << distr(gen) << ' '; // generate numbers
-}
-	
 void printFromPosition(int x, int y, int width, int height,vector<string> player) {
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++) {
@@ -116,32 +104,15 @@ void FixConsoleWindow()
 
 	style = style & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME);
 	SetWindowLong(consoleWindow, GWL_STYLE, style);
-}
+} 
+void writeMockData() {
+	fstream file; 
+	file.open("players.dat", ios::binary | ios::out); 
 
-void saveFile() {
-	ofstream file;
-	string name = "Player's state";
-	string car = "Car's state";
-	string dog = "Dog's state";
-	int total = 1; 
-	file.open("players.dat", ios::out | ios::binary);
-	file.write((char*)&total, sizeof(total)); 
-	file.write((char*)&name, sizeof(name));
-	file.write((char*)&car, sizeof(car));
-	file.write((char*)&dog, sizeof(dog));
-	file.close();
-	ifstream ifile;
-	ifile.open("players.txt", ios::in | ios::binary);
-	ifile.read((char*)&total, sizeof(total)); 
-	ifile.read((char*)&name, sizeof(name));
-	ifile.read((char*)&car, sizeof(car));
-	ifile.read((char*)&dog, sizeof(dog));
-	ifile.close();
-	cout << sizeof(total) << endl; 
-	cout << name << endl;
-	cout << car << endl;
-	cout << dog << endl;
-	
+	vector<string> names = { "Quy Hoa", "Thanh Dat", "Duc Anh" }; 
+	for (auto& name : names){
+		file.write((char*)&name, sizeof(name)); 
+	}
 }
 
 int main()
@@ -151,31 +122,11 @@ int main()
 	Game::SetWindowSize(600, 600); 
 	Game::FixConsoleWindow(); 
 	//Game::player.draw();
-	/*while (Game::isRunning)
-		if (Game::checkHit()) {
-			Game::exitGame();
-			cout << "Hitted";
-		}
-			Game::isRunning = false;
-			t1.join();
-			return 0;
-		}
-		int temp = toupper(_getch());
-		if (temp == 27) {
-			Game::isRunning = false;
-			t1.join();
-			return 0;
-		}
-		Game::player.undraw();
-		Game::player.move(char(temp));
-		Game::player.draw();
-	}
-	*/
-	/*if (t1.joinable())
-		t1.join();*/
+	
 	Game game; 
-	//saveFile();
-	game.drawMenu(); 
+	//writeMockData(); 
+	/*game.saveGame("Quy Hoa Clone"); 
+	game.getPlayerFromFile("Quy Hoa Clone"); */ 
 	return 0;
 }
 //Player player;

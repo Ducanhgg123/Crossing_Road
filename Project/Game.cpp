@@ -168,7 +168,7 @@ void Game::startGame()
 void Game::settingGame()
 {
 	gotoOxy(10, 10);
-	cout << "Setting game";
+	drawMusicSetting(); 
 }
 void Game::drawMenu()
 {
@@ -210,9 +210,9 @@ void Game::drawMenu()
 			}
 			if (active == 2) {
 				isLoading = true; 
-				clrscr();
 				Game::gotoOxy(40, 40);
 				Game::txtColor(DEFAULT_COLOR);
+				system("cls"); 
 				settingGame();
 				break; 
 			}
@@ -326,6 +326,10 @@ void Game::drawLeaderboardScreen()
 	while (1) {
 		txtColor(1); 
 		char c = _getch();
+		if (c == KEY_ESC) {
+			drawMenu();
+			break;
+		}
 		auto it = players.find(int(c) - '0'); 
 		if (it != players.end()) {
 			gotoOxy(50, 5 + it->first); 
@@ -341,22 +345,32 @@ void Game::drawLeaderboardScreen()
 		}
 	}
 }
+void Game::drawMusicSetting(){
+	string on = "On "; 
+	string off = "Off";  
+	bool isOn = true; 
+	gotoOxy(10, 10); 
+	cout << "Music: " << (isOn ? on : off); 
+	while (1) {
+		char c = _getch(); 
+		if (c == KEY_DOWN || c == KEY_UP) {
+			isOn = !isOn; 
+		}
+		if (c == KEY_ENTER) {
+			system("cls"); 
+			drawMenu(); 
+		}
+		gotoOxy(10, 10); 
+		cout << "Music: " << (isOn ? on : off);
+	}
+}
 
-void Game::saveGame(string name)
+void Game::saveGame(string playerName) // Write player to file 
 {
-	int total = 0; 
-	string car, dog; 
-	ifstream ifile;
-	ifile.open("players.txt", ios::in | ios::binary);
-	ifile.read((char*)&total, sizeof(total));
-	ifile.read((char*)&name, sizeof(name));
-	ifile.read((char*)&car, sizeof(car));
-	ifile.read((char*)&dog, sizeof(dog));
-	ifile.close();
-	cout << sizeof(total) << endl;
-	cout << name << endl;
-	cout << car << endl;
-	cout << dog << endl;
+	ofstream file; 
+	file.open("players.dat",ios::app | ios::binary);
+	file.write((char*)&playerName, sizeof(playerName)); 
+	file.close();
 }
 
 void Game::loadGame()
@@ -366,28 +380,36 @@ void Game::loadGame()
 	gotoOxy(offsetX + 3, offsetY + 1); 
 	cout << "1. Player's name"; 
 }
-
 void Game::getPlayerFromFile(string playerName)
 {
-	int total = 0; 
-	string name, car, dog; 
-	ifstream ifile; 
-	ifile.open("players.dat", ios::in | ios::binary); 
-	ifile.read((char*)&total, sizeof(total));
-	// Check is int	
-	if (sizeof(total) == 4) {
-		for (int i = 0; i < total; i++) {
-		ifile.read((char*)&name, sizeof(name));
-		ifile.read((char*)&car, sizeof(car));
-		ifile.read((char*)&dog, sizeof(dog));
-			if (name == playerName) {
-				cout << name << endl; 
-				break; 
-			}
+	ifstream file; 
+	string name; 
+	file.open("players.dat", ios::binary | ios::in); 
+	while (!file.eof()) {
+		file.read((char*)&name, sizeof(name)); 
+		if (name == playerName) {
+			cout << name << endl;
+			break; 
 		}
 	}
-	
 }
+
+void Game::getAllPlayersFromFile()
+{
+	ifstream file; 
+	file.open("players.dat", ios::in | ios::binary); 
+	vector<string> names;
+	int i = 0; 
+	while (!file.eof())
+	{
+		file.read((char*)&names[i], sizeof(names[i]));
+		i++; 
+	}
+	for (auto& name : names) {
+		cout << name << " "; 
+	}
+}
+
 
 void Game::removeCursor() {
 	CONSOLE_CURSOR_INFO Info;
