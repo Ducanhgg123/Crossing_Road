@@ -72,15 +72,15 @@ void GameControl::drawMenu() {
 		{3, "Leaderboard"},
 		{4, "Exit"}
 	};
-	Game::m.lock();
+	
 	goToXY(25, 5);
 	TextColor(colorDefault);
-	Game::m.unlock();
+
 	for (auto& menu : menus) {
-		Game::m.lock();
+		
 		goToXY(25, 5 + menu.first);
 		cout << menu.second;
-		Game::m.unlock();
+		
 	}
 	while (isLoading) {
 		char c = _getch();
@@ -98,31 +98,31 @@ void GameControl::drawMenu() {
 		if (c == KEY_ENTER) {
 			if (active == 1) {
 				isLoading = true;
-				Game::m.lock();
+			
 				system("cls");
 				TextColor(colorDefault);
 				/*Game::gotoOxy(40, 40);*/
 				/*Game::txtColor(DEFAULT_COLOR);*/
-				Game::m.unlock();
+			
 				startGame();
 				
 				break;
 			}
 			if (active == 2) {
 				isLoading = true;
-				Game::m.lock();
+				
 				system("cls");
 				goToXY(40, 40);
 				TextColor(colorDefault);
 				settingGame();
-				Game::m.unlock();
+				
 				break;
 			}
 			if (active == 3) {
-				Game::m.lock();
+				
 				system("cls");
 				drawLeaderboard();
-				Game::m.unlock();
+				
 			}
 			if (active == 4) {
 				exit(1);
@@ -131,19 +131,19 @@ void GameControl::drawMenu() {
 		}
 		for (auto& menu : menus) {
 			if (active == menu.first) {
-				Game::m.lock();
+				
 				TextColor(activeColor);
 				goToXY(25, 5 + menu.first);
 				cout << menu.second;
 				TextColor(colorDefault);
-				Game::m.unlock();
+				
 				continue;
 			}
-			Game::m.lock();
+			
 			TextColor(colorDefault);
 			goToXY(25, 5 + menu.first);
 			cout << menu.second;
-			Game::m.unlock();
+			
 		}
 	}
 }
@@ -162,6 +162,7 @@ void GameControl::drawLeaderboard() {
 		{2, "Thanh Dat"},
 		{3, "Duc Anh"},
 	};
+	int active = 0; 
 	goToXY(50, 5);
 	cout << "All players: ";
 	for (auto& el : players) {
@@ -182,6 +183,51 @@ void GameControl::drawLeaderboard() {
 					cout << p->first << "." << p->second;
 				}
 			}
+		}
+	
+		if (c == KEY_DOWN) {
+			active++; 
+			if (active > players.size()) {
+				active = 1; 
+			}
+			auto it = players.find(int(active));
+			if (it != players.end()) {
+				goToXY(50, 5 + it->first);
+				TextColor(activeColor);
+				cout << it->first << "." << it->second;
+				TextColor(colorDefault);
+				for (auto p = players.begin(); p != players.end(); p++) {
+					if (p != it) {
+						goToXY(50, 5 + p->first);
+						cout << p->first << "." << p->second;
+					}
+				}
+			}
+		}
+
+		if (c == KEY_UP) {
+			active--; 
+			if (active < 1) {
+				active = players.size(); 
+			}
+			auto it = players.find(active);
+			if (it != players.end()) {
+				goToXY(50, 5 + it->first);
+				TextColor(activeColor);
+				cout << it->first << "." << it->second;
+				TextColor(colorDefault);
+				for (auto p = players.begin(); p != players.end(); p++) {
+					if (p != it) {
+						goToXY(50, 5 + p->first);
+						cout << p->first << "." << p->second;
+					}
+				}
+			}
+		}
+
+		if (c == KEY_ESC) {
+			system("cls"); 
+			drawMenu(); 
 		}
 	}
 }
