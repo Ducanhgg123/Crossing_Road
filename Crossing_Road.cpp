@@ -207,7 +207,7 @@ void ConsoleColor(int c = 240)
 void ThreadCar()
 {
 	if (Game::carLine.getLineSize() == 0)
-		Game::carLine.insertNewObstacle(new Car(Game::startLine, 10, 1));
+		Game::carLine.insertNewObstacle(new Car(Game::startLine, distanceBetweenLine + 1, 1));
 	Game::carLine.makeSound();
 	while (Game::isRunning)
 	{
@@ -216,9 +216,9 @@ void ThreadCar()
 		if (Game::carLine.isRed())
 			Sleep(1000);
 		if (Game::carLine.getLineSize() == 0)
-			Game::carLine.insertNewObstacle(new Car(Game::startLine, 10, 1));
+			Game::carLine.insertNewObstacle(new Car(Game::startLine, distanceBetweenLine + 1, 1));
 		else if (Game::carLine.getLineSize() < 4 && Game::carLine.canAddNewObstacle())
-			Game::carLine.insertNewObstacle(new Car(Game::startLine, 10, 1));
+			Game::carLine.insertNewObstacle(new Car(Game::startLine, distanceBetweenLine  + 1, 1));
 		Game::carLine.move();
 		Game::carLine.deleteReachEndPoint(Game::endLine);
 		if (Game::checkHit()) {
@@ -230,7 +230,7 @@ void ThreadCar()
 void ThreadTruck()
 {
 	if (Game::truckLine.getLineSize() == 0)
-		Game::truckLine.insertNewObstacle(new Truck(Game::endLine, 16, -1));
+		Game::truckLine.insertNewObstacle(new Truck(Game::endLine, 2*distanceBetweenLine + 1, -1));
 	Game::truckLine.makeSound();
 	while (Game::isRunning)
 	{
@@ -239,9 +239,9 @@ void ThreadTruck()
 		if (Game::truckLine.isRed())
 			Sleep(1000);
 		if (Game::truckLine.getLineSize() == 0)
-			Game::truckLine.insertNewObstacle(new Truck(Game::endLine, 16, -1));
+			Game::truckLine.insertNewObstacle(new Truck(Game::endLine, 2*distanceBetweenLine + 1, -1));
 		else if (Game::truckLine.getLineSize() < 3 && Game::truckLine.canAddNewObstacle())
-			Game::truckLine.insertNewObstacle(new Truck(Game::endLine, 16, -1));
+			Game::truckLine.insertNewObstacle(new Truck(Game::endLine, 2 * distanceBetweenLine + 1, -1));
 		Game::truckLine.move();
 		Game::truckLine.deleteReachEndPoint(Game::startLine);
 		if (Game::checkHit()) {
@@ -259,7 +259,7 @@ void ThreadTruck()
 void ThreadDog()
 {
 	if (Game::dogLine.getLineSize() == 0)
-		Game::dogLine.insertNewObstacle(new Dog(Game::startLine, 24, 1));
+		Game::dogLine.insertNewObstacle(new Dog(Game::startLine, 3 * distanceBetweenLine + 1, 1));
 	Game::dogLine.makeSound();
 	while (Game::isRunning)
 	{
@@ -268,9 +268,9 @@ void ThreadDog()
 		if (Game::dogLine.isRed())
 			Sleep(1000);
 		if (Game::dogLine.getLineSize() == 0)
-			Game::dogLine.insertNewObstacle(new Dog(Game::startLine, 24, 1));
+			Game::dogLine.insertNewObstacle(new Dog(Game::startLine, 3 * distanceBetweenLine + 1, 1));
 		else if (Game::dogLine.getLineSize() < 4 && Game::dogLine.canAddNewObstacle())
-			Game::dogLine.insertNewObstacle(new Dog(Game::startLine, 24, 1));
+			Game::dogLine.insertNewObstacle(new Dog(Game::startLine, 3 * distanceBetweenLine + 1, 1));
 		Game::dogLine.move();
 		Game::dogLine.deleteReachEndPoint(Game::endLine);
 		if (Game::checkHit()) {
@@ -288,6 +288,21 @@ void ThreadDog()
 //		
 //	}
 //}
+void ThreadCrossLine()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		Game::crossLine.push_back(CrossLine(Game::startLine, distanceBetweenLine*(i+1), Game::endLine - Game::startLine));
+	}
+	while (Game::isRunning)
+	{
+		Sleep(10);
+		for (int i = 0; i < 4; i++)
+		{
+			Game::crossLine[i].draw();
+		}
+	}
+}
 int main()
 {
 	TextColor(colorDefault);
@@ -296,6 +311,7 @@ int main()
 	thread t1(ThreadCar);
 	thread t2(ThreadTruck);
 	thread t3(ThreadDog);
+	thread t4(ThreadCrossLine);
 	Game::player.draw();
 	while (Game::isRunning)
 	{
@@ -309,6 +325,8 @@ int main()
 				t2.join();
 			if (t3.joinable())
 				t3.join();
+			if (t4.joinable())
+				t4.join();
 			return 0;
 		}
 		int temp = toupper(_getch());
@@ -320,6 +338,8 @@ int main()
 				t2.join();
 			if (t3.joinable())
 				t3.join();
+			if (t4.joinable())
+				t4.join();
 			return 0;
 		}
 		Game::player.undraw();
@@ -332,5 +352,7 @@ int main()
 		t2.join();
 	if (t3.joinable())
 		t3.join();
+	if (t4.joinable())
+		t4.join();
 	return 0;
 }

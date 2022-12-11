@@ -12,3 +12,4 @@ using namespace std;
 const int colorRed = 244;
 const int colorGreen = 250;
 const int colorDefault = 240;
+const int distanceBetweenLine = 7;

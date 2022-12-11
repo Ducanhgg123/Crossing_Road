@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Obstacle.h"
 #include "Line.h"
+#include "CrossLine.h"
 static class Game {
 public:
 	static int level;
@@ -14,6 +15,7 @@ public:
 	static Line dogLine;
 	static Line truckLine;
 	static Player player;
+	static vector<CrossLine> crossLine;
 	static bool isRunning;
 	static bool waiting;
 	static mutex m;

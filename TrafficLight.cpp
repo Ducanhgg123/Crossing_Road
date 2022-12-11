@@ -5,7 +5,7 @@ TrafficLight::TrafficLight()
 {
 	p.setX(0);
 	p.setY(0);
-	p.setC('X');
+	p.setC(char(178));
 	status = 1;
 }
 
@@ -13,7 +13,7 @@ TrafficLight::TrafficLight(int x, int y)
 {
 	p.setX(x);
 	p.setY(y);
-	p.setC('X');
+	p.setC(char(178));
 	status = 1;
 }
 

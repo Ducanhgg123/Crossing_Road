@@ -48,6 +48,9 @@
     <ClCompile Include="TrafficLight.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="CrossLine.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="point.h">
@@ -81,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Line.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CrossLine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

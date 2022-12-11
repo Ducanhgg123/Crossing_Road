@@ -1,10 +1,11 @@
 #include "Game.h"
 int Game::level = 1;
-int Game::startLine = 20;
-int Game::endLine = 130;
-Line Game::carLine = Line(Game::endLine+10,10);
-Line Game::truckLine = Line(Game::startLine-10,16);
-Line Game::dogLine = Line(Game::endLine+10,24);
+int Game::startLine = 10;
+int Game::endLine = 140;
+Line Game::carLine = Line(Game::endLine+5, distanceBetweenLine );
+Line Game::truckLine = Line(Game::startLine-5, 2*distanceBetweenLine);
+Line Game::dogLine = Line(Game::endLine+5, 3*distanceBetweenLine);
+vector<CrossLine> Game::crossLine = vector<CrossLine>();
 Player Game::player = Player(65, 30);
 bool Game::isRunning = 1;
 bool Game::waiting = 0;
@@ -16,7 +17,7 @@ Game::Game() {
 	carLine = Line();
 	truckLine = Line();
 	dogLine = Line();
-	player = Player(65,30);
+	player = Player(65, 5 * distanceBetweenLine);
 	isRunning = 1;
 }
 bool Game::isColide(Player player, Obstacle*& obstacle) {
