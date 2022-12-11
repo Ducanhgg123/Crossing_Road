@@ -6,6 +6,7 @@
 #include "Obstacle.h"
 #include<map>
 #include<iostream>
+#include<fstream>
 using namespace std; 
 
 
@@ -33,10 +34,11 @@ public:
 	static deque<Car> carLine;
 	static deque<Dog> dogLine;
 	static deque<Truck> truckLine;
-	static Player player;
+	Player player;
 	static bool isRunning;
 	static bool waiting;
 	static mutex m;
+	void drawRectangle(int offsetX, int offsetY, int width, int height, int color); 
 
 public:
 	Game(); 
@@ -51,14 +53,19 @@ public:
 	static void gotoOxy(int x, int y);
 	static void clrscr();
 	static void txtColor(int color); 
-	void drawBorder();
 	void startGame();
 	void settingGame();
 	void drawMenu();
 	void menu(int active, int color); 
+	void drawBorder();
+	void drawModal(); 
 	void drawInfoMenu(); 
 	void drawLoserScreen(); 
-	void drawLeaderboardScreen(); 
+	void drawLeaderboardScreen();
+
+	void saveGame(string name); 
+	void loadGame(); 
+	void getPlayerFromFile(string name); 
 };
 
 

@@ -2,12 +2,20 @@
 #include"Game.h"
 Player::Player()
 {
+	x = 65; 
+	y = 0; 
+	shape.resize(3); 
+	shape = { " o ", 
+			  "/0\\", 
+			  "/ \\"}; 
 	OFFSET_X = 0;
 	OFFSET_Y = 0;
 }
 Player::Player(int OFFSET_X, int OFFSET_Y) {
 	this->OFFSET_X = OFFSET_X;
 	this->OFFSET_Y = OFFSET_Y;
+	x = 0; 
+	y = 0; 
 	shape[0] = "  (\")";
 	shape[1] = " \\/0\\G";
 	shape[2] = " _/ \\_";
@@ -21,7 +29,7 @@ Player::Player(int OFFSET_X, int OFFSET_Y) {
 }
 vector<string> Player::getPlayer()
 {
-	return {};
+	return shape;
 }
 void Player::draw() {
 	for (int i = 0; i < p.size(); i++) {

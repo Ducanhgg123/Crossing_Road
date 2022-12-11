@@ -1,6 +1,57 @@
 #include "Game.h"
+
 bool Game::waiting = 0;
 mutex Game::m;
+
+void Game::drawRectangle(int offsetX, int offsetY, int width, int height, int color = 10)
+{
+	int colorDefault = 10; 
+		// Delete everything in the table
+		for (int i = offsetX; i < offsetX + width; i++)
+			for (int j = offsetY; j < offsetY + height; j++) {
+				Game::m.lock();
+				goToXY(i, j);
+				cout << " ";
+				Game::m.unlock();
+			}
+
+		// Draw left
+		for (int i = offsetY; i < offsetY + height; i++) {
+			Game::m.lock();
+			txtColor(color);
+			goToXY(offsetX, i);
+			cout << char(219);
+			txtColor(colorDefault);
+			Game::m.unlock();
+		}
+		// Draw lower
+		for (int i = offsetX; i < offsetX + width; i++) {
+			Game::m.lock();
+			txtColor(color);
+			goToXY(i, offsetY + height - 1);
+			cout << char(219);
+			txtColor(colorDefault);
+			Game::m.unlock();
+		}
+		// Draw right
+		for (int i = offsetY + height - 1; i >= offsetY; i--) {
+			Game::m.lock();
+			txtColor(color);
+			goToXY(offsetX + width, i);
+			cout << char(219);
+			txtColor(colorDefault);
+			Game::m.unlock();
+		}
+		// Draw upper
+		for (int i = offsetX + width - 1; i >= offsetX; i--) {
+			Game::m.lock();
+			txtColor(color);
+			goToXY(i, offsetY);
+			cout << char(219);
+			txtColor(colorDefault);
+			Game::m.unlock();
+		}
+}
 
 Game::Game() {
 	level = 1;
@@ -9,9 +60,10 @@ Game::Game() {
 	carLine = deque<Car>();
 	dogLine = deque<Dog>();
 	truckLine = deque<Truck>();
-	player = Player(65, 30);
+	//player = Player(65, 30);
 	isRunning = 1;
 }
+
 void Game::FixConsoleWindow()
 {
 	HWND hwnd = GetConsoleWindow();
@@ -22,7 +74,6 @@ void Game::FixConsoleWindow()
 
 	style = style & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME);
 	SetWindowLong(consoleWindow, GWL_STYLE, style);
-
 	removeCursor(); 
 }
 void Game::SetWindowSize(SHORT width, SHORT height)
@@ -70,30 +121,45 @@ void Game::drawBorder()
 	int height = 30;
 	int offsetX = 0;
 	int offsetY = 0;
-	for (int i = 0; i < height; i++) {
-		if (i == 0) {
-			Game::gotoOxy(offsetX, offsetY + i - 1);
-			cout << char(220);
-			continue;
-		}
-		Game::gotoOxy(offsetX, offsetY + i);
-		cout << char(219);
-	}
-	for (int i = 0; i < width; i++) {
-		Game::gotoOxy(offsetX + i, offsetY - 1);
-		cout << char(220);
-	}
-	for (int i = 0; i < height; i++) {
-		Game::gotoOxy(offsetX + width, offsetY + i);
-		cout << char(219);
-	}
-	for (int i = 0; i < width; i++) {
-		Game::gotoOxy(offsetX + 1 + i, offsetY);
-		cout << char(220);
-	}
+	drawRectangle(offsetX, offsetY, width, height, 1); 
 	drawInfoMenu();
 
-	while (1) {};
+	while (1) {
+		char c = toupper(_getch());
+		if (c == 'L') {
+			loadGame(); 
+		}
+		if (c == 'M') {
+			drawModal();
+			break; 
+		}
+	};
+}
+void Game::drawModal()
+{
+	int width = 25; 
+	int height = 10; 
+	int offsetX = 15; 
+	int offsetY = 10; 
+	txtColor(10); 
+	drawRectangle(offsetX, offsetY, width, height);
+	map<int, string> contents = {
+		{1, "1.Back to menu"},
+		{2, "2.Save game"},
+	}; 
+	for (auto& el : contents) {
+		gotoOxy(offsetX + 4, offsetY + el.first + 2);
+		cout << el.second; 
+	}
+	char c = _getch(); 
+	if (c == '1') {
+		system("cls"); 
+		drawMenu(); 
+	}
+	if (c == '2') {
+		clrscr();
+		saveGame("playerName");
+	};
 }
 void Game::startGame()
 {
@@ -106,20 +172,31 @@ void Game::settingGame()
 }
 void Game::drawMenu()
 {
-	menu(0, 10);
 	int active = 0;
 	bool isLoading = true; 
+	txtColor(DEFAULT_COLOR); 
+	map<int, string>  menus = {
+		{1, "New game"},
+		{2, "Settings"},
+		{3, "Leaderboard"}, 
+		{4, "Exit"}
+	}; 
+	gotoOxy(25, 5); 
+	for (auto& menu : menus) {
+		gotoOxy(25, 5 + menu.first); 
+		std::cout << menu.second; 
+	}
 	while (isLoading) {
 		char c = _getch();
 		if (c == KEY_UP || c == 'w') {
 			active--;
 			if (active < 1) {
-				active = 3;
+				active = 4;
 			}
 		}
 		if (c == KEY_DOWN || c == 's') {
 			active++;
-			if (active > 3)
+			if (active > 4)
 				active = 1;
 		}
 		if (c == KEY_ENTER) {
@@ -140,12 +217,24 @@ void Game::drawMenu()
 				break; 
 			}
 			if (active == 3) {
+				drawLeaderboardScreen(); 
+			}
+			if (active == 4) {
 				exit(1);
 			}
 			break;
 		}
-		clrscr();
-		menu(active, 240);
+		for (auto& menu : menus) {
+			if (active == menu.first) {
+				txtColor(44); 
+				gotoOxy(25, 5 + menu.first);
+				cout << menu.second; 
+				continue; 
+			}
+			txtColor(DEFAULT_COLOR); 
+			gotoOxy(25, 5 + menu.first); 
+			std::cout << menu.second; 
+		}
 	}
 
 }
@@ -214,11 +303,11 @@ void Game::drawInfoMenu()
 }
 void Game::drawLoserScreen() {
 	cout << "__     __                                    _                     _" << endl; 
-	cout << "\ \   / /                                   | |                   | |" << endl; 
-	cout << "\ \_/ /__  _   _    __ _ _ __ ___    __ _  | | ___  ___  ___ _ __| |" << endl; 
-	cout << "\ / _ \| | | |  / _` | '__/ _ \  / _` | | |/ _ \/ __|/ _ \ '__| |" << endl; 
+	cout << "\\ \\   / /                                   | |                   | |" << endl; 
+	cout << "\\ \\_/ /__  _   _    __ _ _ __ ___    __ _  | | ___  ___  ___ _ __| |" << endl; 
+	cout << "\\ / _ \| | | |  / _` | '__/ _ \  / _` | | |/ _ \/ __|/ _ \ '__| |" << endl; 
 	cout << "| | (_) | |_| | | (_| | | |  __/ | (_| | | | (_) \__ \  __/ |  |_|" << endl; 
-	cout << "|_ | \___ / \__, _ | \__, _ | _ | \___ | \__, _| |_ | \___/|___ / \___ | _ | (_)" << endl; 
+	cout << "|_ | \___ / \\__, _ | \\__, _ | _ | \\___ | \\__, _| |_ | \\___/|___ / \\___ | _ | (_)" << endl; 
 
 }
 void Game::drawLeaderboardScreen()
@@ -251,6 +340,53 @@ void Game::drawLeaderboardScreen()
 			}
 		}
 	}
+}
+
+void Game::saveGame(string name)
+{
+	int total = 0; 
+	string car, dog; 
+	ifstream ifile;
+	ifile.open("players.txt", ios::in | ios::binary);
+	ifile.read((char*)&total, sizeof(total));
+	ifile.read((char*)&name, sizeof(name));
+	ifile.read((char*)&car, sizeof(car));
+	ifile.read((char*)&dog, sizeof(dog));
+	ifile.close();
+	cout << sizeof(total) << endl;
+	cout << name << endl;
+	cout << car << endl;
+	cout << dog << endl;
+}
+
+void Game::loadGame()
+{
+	int offsetX = 15, offsetY = 10; 
+	drawRectangle(offsetX, offsetY, 25, 10); 
+	gotoOxy(offsetX + 3, offsetY + 1); 
+	cout << "1. Player's name"; 
+}
+
+void Game::getPlayerFromFile(string playerName)
+{
+	int total = 0; 
+	string name, car, dog; 
+	ifstream ifile; 
+	ifile.open("players.dat", ios::in | ios::binary); 
+	ifile.read((char*)&total, sizeof(total));
+	// Check is int	
+	if (sizeof(total) == 4) {
+		for (int i = 0; i < total; i++) {
+		ifile.read((char*)&name, sizeof(name));
+		ifile.read((char*)&car, sizeof(car));
+		ifile.read((char*)&dog, sizeof(dog));
+			if (name == playerName) {
+				cout << name << endl; 
+				break; 
+			}
+		}
+	}
+	
 }
 
 void Game::removeCursor() {
@@ -295,6 +431,7 @@ bool Game::isColide(Player player, Obstacle obstacle) {
 	return false;
 }
 bool Game::checkHit() {
+	Player player; 
 	for (int i = 0; i < carLine.size(); i++) {
 		if (isColide(player, carLine[i]))
 			return true;
@@ -314,5 +451,6 @@ void Game::isHit() {
 		 exitGame();
 	 }
  }
+
 
 
