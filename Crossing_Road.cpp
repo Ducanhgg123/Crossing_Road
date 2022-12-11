@@ -285,8 +285,9 @@ void ThreadDog()
 //}
 int main()
 {
+	TextColor(240);
 	fixConsoleWindow();
-
+	
 	thread t1(ThreadCar);
 	thread t2(ThreadTruck);
 	thread t3(ThreadDog);

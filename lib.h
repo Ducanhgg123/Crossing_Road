@@ -9,6 +9,6 @@
 #include <windows.h>
 #include <mutex>
 using namespace std;
-const int colorRed = 4;
-const int colorGreen = 5;
-const int colorDefault = 7;
+const int colorRed = 244;
+const int colorGreen = 250;
+const int colorDefault = 240;
