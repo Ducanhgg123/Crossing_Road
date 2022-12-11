@@ -30,6 +30,11 @@ void TextColor(int color)
 	mau = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(mau, color);
 }
+
+void ConsoleColor(int c = 240)
+{
+
+}
 //void goToXY(int x, int y)
 //{
 //	COORD coord;
@@ -285,6 +290,7 @@ void ThreadDog()
 //}
 int main()
 {
+	TextColor(colorDefault);
 	fixConsoleWindow();
 
 	thread t1(ThreadCar);
