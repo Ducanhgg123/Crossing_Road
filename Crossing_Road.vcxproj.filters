@@ -51,8 +51,13 @@
     <ClCompile Include="CrossLine.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Shape.cpp">
       <Filter>Header Files</Filter>
+=======
+    <ClCompile Include="GameControl.cpp">
+      <Filter>Resource Files</Filter>
+>>>>>>> b47ea306169d42ec06fb1440ca61bc85413d427c
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -92,7 +97,11 @@
     <ClInclude Include="CrossLine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Shape.h">
+=======
+    <ClInclude Include="GameControl.h">
+>>>>>>> b47ea306169d42ec06fb1440ca61bc85413d427c
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

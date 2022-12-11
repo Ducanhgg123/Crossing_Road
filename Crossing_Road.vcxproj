@@ -43,7 +43,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -146,6 +146,7 @@
     <ClCompile Include="CrossLine.cpp" />
     <ClCompile Include="Dog.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameControl.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="CrossLine.h" />
     <ClInclude Include="Dog.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameControl.h" />
     <ClInclude Include="lib.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Obstacle.h" />
