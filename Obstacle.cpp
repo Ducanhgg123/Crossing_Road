@@ -13,16 +13,24 @@ bool Obstacle::reachEndPoint(int x) {
 	}
 	return false;
 }
+
+
+
 void Obstacle::draw() {
 	for (int i = 0; i < p.size(); i++) {
 		Game::m.lock();
-		goToXY(p[i].getX(), p[i].getY());
-		cout << p[i].getC();
+		if (!(Game::isCollideWithFruit(p[i])))
+		{
+			goToXY(p[i].getX(), p[i].getY());
+			cout << p[i].getC();
+		}
 		Game::m.unlock();
 	}
 }
 void Obstacle::undraw() {
-	for (int i = 0; i < p.size(); i++) {
+	for (int i = 0; i < p.size(); i++) 
+		if (!Game::isCollideWithFruit(p[i]))
+	{
 		Game::m.lock();
 		goToXY(p[i].getX(), p[i].getY());
 		cout << " ";
@@ -36,10 +44,12 @@ void Obstacle::undrawBack() {
 	back[2] = back[1] + shape[1].size();
 	for (int i = 0; i < 3; i++) {
 		point tmp = p[back[i]];
-		Game::m.lock();
-		goToXY(tmp.getX(), tmp.getY());
-		cout << " ";
-		Game::m.unlock();
+		if (!Game::isCollideWithFruit(tmp)) {
+			Game::m.lock();
+			goToXY(tmp.getX(), tmp.getY());
+			cout << " ";
+			Game::m.unlock();
+		}
 	}
 }
 int Obstacle::getDistanceFromStart() {

@@ -36,3 +36,13 @@ bool CrossLine::isCollideWithPlayer(point p) {
 	}
 	return false;
 }
+
+vector<point> CrossLine::getListPoint()
+{
+	vector<point> temp;
+	for (int i = 0; i < p.size(); i++)
+	{
+		temp.push_back(p[i]);
+	}
+	return temp;
+}

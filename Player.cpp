@@ -1,11 +1,13 @@
 #include "Player.h"
 #include "Game.h"
 
-Player::Player() {
+Player::Player() 
+{
 	OFFSET_X = 0;
 	OFFSET_Y = 0;
 }
-Player::Player(int OFFSET_X, int OFFSET_Y) {
+Player::Player(int OFFSET_X, int OFFSET_Y) 
+{
 	this->OFFSET_X = OFFSET_X;
 	this->OFFSET_Y = OFFSET_Y;
 	status = 1;
@@ -17,9 +19,11 @@ Player::Player(int OFFSET_X, int OFFSET_Y) {
 			p.push_back(temp);
 		}
 }
-void Player::draw() {
+void Player::draw() 
+{
 	//setShape1();
-	for (int i = 0; i < p.size(); i++) {
+	for (int i = 0; i < p.size(); i++) 
+	{
 		Game::m.lock();
 		goToXY(p[i].getX(), p[i].getY());
 		cout << p[i].getC();
@@ -35,18 +39,44 @@ void Player::undraw() {
 	}
 }
 void Player::move(char c) {
-	for (int i = 0; i < p.size(); i++) {
-		if (c == 'W' || c == 'w') {
-			p[i].setY(p[i].getY() - 1);
+	int hop = 3;
+	if (canMove(c))
+	{
+		for (int i = 0; i < p.size(); i++) 
+		{
+			if ((c == 'W' || c == 'w') && p[i].getY() >= 3) {
+				p[i].setY(p[i].getY() - hop);
+			}
+			if ((c == 'S' || c == 's') && p[i].getY() <= 32)
+				p[i].setY(p[i].getY() + hop);
+			if ((c == 'A' || c == 'a') && p[i].getX() >= 3)
+				p[i].setX(p[i].getX() - hop);
+			if ((c == 'D' || c == 'd') && p[i].getX() <= 102)
+				p[i].setX(p[i].getX() + hop);
 		}
-		if (c == 'S' || c == 's')
-			p[i].setY(p[i].getY() + 1);
-		if (c == 'A' || c == 'a')
-			p[i].setX(p[i].getX() - 1);
-		if (c == 'D' || c == 'd')
-			p[i].setX(p[i].getX() + 1);
 	}
 }
+
+bool Player::canMove(char c)
+{
+	int hop = 3;
+	for (int i = 0; i < p.size(); i++) {
+		if ((c == 'W' || c == 'w'))
+			if (!(p[i].getY() >= 3))
+				return false;
+		if ((c == 'S' || c == 's') )
+			if (!(p[i].getY() <= 32))
+				return false;
+		if ((c == 'A' || c == 'a'))
+			if (!(p[i].getX() >= 3))
+				return false;
+		if ((c == 'D' || c == 'd') )
+			if (!(p[i].getX() <= 105))
+				return false;
+	}
+	return true;
+}
+
 bool Player::isAlive() {
 	return status;
 }

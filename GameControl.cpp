@@ -302,3 +302,27 @@ void GameControl::drawInfoMenu() {
 void GameControl::saveGame() {
 
 }
+void GameControl::drawScore() {
+	Game::m.lock();
+	goToXY(105, 5);
+	cout << "Your score : " << Game::score;
+	Game::m.unlock();
+}
+void GameControl::drawFruitRequired() {
+	Game::m.lock();
+	goToXY(110, 3);
+	cout << "Fruit required : " << Game::fruitRequired;
+	Game::m.unlock();
+}
+void GameControl::drawGate() {
+	drawRectangle(50, 1, 10, 5, colorGreen);
+}
+void GameControl::levelUp() {
+	int level = Game::level;
+	int score = Game::score;
+	Game::restartGame();
+	Game::fruitForThisLevel += 2;
+	Game::fruitRequired = Game::fruitForThisLevel;
+	Game::level = level+1;
+	Game::score = score;
+}

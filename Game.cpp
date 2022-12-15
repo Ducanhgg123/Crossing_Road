@@ -1,5 +1,8 @@
 #include "Game.h"
 int Game::level = 1;
+int Game::score = 0;
+int Game::fruitRequired = 3;
+int Game::fruitForThisLevel = 3;
 int Game::startLine = 6;
 int Game::endLine = 95;
 Line Game::carLine = Line(104, distanceBetweenLine+2 );
@@ -7,14 +10,30 @@ Line Game::truckLine = Line(1, 2*distanceBetweenLine+2);
 Line Game::dogLine = Line(104, 3*distanceBetweenLine+2);
 vector<CrossLine> Game::crossLine = vector<CrossLine>();
 Player Game::player = Player(65, 30);
+Fruit Game::fruit = Fruit();
 bool Game::isRunning = 1;
 bool Game::waiting = 0;
 mutex Game::m;
 GameControl Game::gameControl = GameControl();
 Game::Game() {
 	level = 1;
+	score = 0;
+	fruitRequired = 3;
+	fruitForThisLevel = 3;
 	startLine = 10;
-	endLine = 130;
+	endLine = 95;
+	carLine = Line();
+	truckLine = Line();
+	dogLine = Line();
+	player = Player(65, 5 * distanceBetweenLine);
+	isRunning = 1;
+}
+void Game::restartGame() {
+	level = 1;
+	score = 0;
+	fruitRequired = 3;
+	startLine = 10;
+	endLine = 95;
 	carLine = Line();
 	truckLine = Line();
 	dogLine = Line();
@@ -31,6 +50,45 @@ bool Game::isColide(Player player, Obstacle*& obstacle) {
 		}
 	return false;
 }
+
+bool Game::isCollideWithFruit(point& temp)
+{
+	deque<point> listFruit = Game::fruit.getListPoint();
+	for (int i = 0; i < listFruit.size(); i++)
+	{
+		if (temp.getX() == listFruit[i].getX() && temp.getY() == listFruit[i].getY())
+
+			return true;
+	}
+	return false;
+}
+
+bool Game::isCollideWithPlayer(point& temp)
+{
+	vector<point> listPlayer = player.getListPoint();
+	for (int i = 0; i < listPlayer.size(); i++)
+	{
+		if (temp.getX() == listPlayer[i].getX() && temp.getY() == listPlayer[i].getY())
+			return true;
+	}
+	return false;
+}
+
+bool Game::isColidePlayerWithFruit(Player player, Fruit fruit)
+{
+	vector<point> listPlayer = player.getListPoint();
+	deque<point> listFruit = fruit.getListPoint();
+	for (int i = 0; i < listPlayer.size(); i++)
+	{
+		for (int j = 0; j < listFruit.size(); j++)
+		{
+			if (listPlayer[i].getX() == listFruit[j].getX() && listPlayer[i].getY() == listFruit[j].getY())
+				return true;
+		}
+	}
+	return false;
+}
+
 bool Game::checkHit() {
 	deque<Obstacle*> listCar = carLine.getLine();
 	deque<Obstacle*> listTruck = truckLine.getLine();
@@ -125,13 +183,13 @@ void ThreadCar()
 	Game::carLine.makeSound();
 	while (Game::isRunning)
 	{
-		Sleep(10);
+		Sleep(100);
 		Game::carLine.updateTrafficLight();
 		if (Game::carLine.isRed())
 			Sleep(1000);
 		if (Game::carLine.getLineSize() == 0)
 			Game::carLine.insertNewObstacle(new Car(Game::startLine, distanceBetweenLine + 1, 1));
-		else if (Game::carLine.getLineSize() < 4 && Game::carLine.canAddNewObstacle())
+		else if (Game::carLine.getLineSize() < 1 && Game::carLine.canAddNewObstacle())
 			Game::carLine.insertNewObstacle(new Car(Game::startLine, distanceBetweenLine + 1, 1));
 		Game::carLine.move();
 		Game::carLine.deleteReachEndPoint(Game::endLine);
@@ -148,13 +206,13 @@ void ThreadTruck()
 	Game::truckLine.makeSound();
 	while (Game::isRunning)
 	{
-		Sleep(10);
+		Sleep(100);
 		Game::truckLine.updateTrafficLight();
 		if (Game::truckLine.isRed())
 			Sleep(1000);
 		if (Game::truckLine.getLineSize() == 0)
 			Game::truckLine.insertNewObstacle(new Truck(Game::endLine, 2 * distanceBetweenLine + 1, -1));
-		else if (Game::truckLine.getLineSize() < 3 && Game::truckLine.canAddNewObstacle())
+		else if (Game::truckLine.getLineSize() < 1 && Game::truckLine.canAddNewObstacle())
 			Game::truckLine.insertNewObstacle(new Truck(Game::endLine, 2 * distanceBetweenLine + 1, -1));
 		Game::truckLine.move();
 		Game::truckLine.deleteReachEndPoint(Game::startLine);
@@ -171,13 +229,13 @@ void ThreadDog()
 	Game::dogLine.makeSound();
 	while (Game::isRunning)
 	{
-		Sleep(10);
+		Sleep(100);
 		Game::dogLine.updateTrafficLight();
 		if (Game::dogLine.isRed())
 			Sleep(1000);
 		if (Game::dogLine.getLineSize() == 0)
 			Game::dogLine.insertNewObstacle(new Dog(Game::startLine, 3 * distanceBetweenLine + 1, 1));
-		else if (Game::dogLine.getLineSize() < 4 && Game::dogLine.canAddNewObstacle())
+		else if (Game::dogLine.getLineSize() < 1 && Game::dogLine.canAddNewObstacle())
 			Game::dogLine.insertNewObstacle(new Dog(Game::startLine, 3 * distanceBetweenLine + 1, 1));
 		Game::dogLine.move();
 		Game::dogLine.deleteReachEndPoint(Game::endLine);
@@ -204,28 +262,30 @@ void ThreadCrossLine()
 		}
 	}
 }
+void ThreadFruit()
+{
+	Game::fruit.generateNewFruit();
+	while (Game::isRunning)
+	{
+		Game::gameControl.drawScore();
+		Game::gameControl.drawFruitRequired();
+		if (Game::isColidePlayerWithFruit(Game::player, Game::fruit) && Game::fruitRequired>0)
+		{
+			Game::fruitRequired--;
+			Game::score += Game::level * 100;
+			Game::fruit.collisionHandle();
+		}
+	}
+}
 void Game::startGame() {
 	thread t1(ThreadCar);
 	thread t2(ThreadTruck);
 	thread t3(ThreadDog);
 	thread t4(ThreadCrossLine);
+	thread t5(ThreadFruit);
 	Game::player.draw();
 	while (Game::isRunning)
 	{
-		if (Game::checkHit()) {
-			Game::exitGame();
-			cout << "Hitted";
-			Game::isRunning = false;
-			if (t1.joinable())
-				t1.join();
-			if (t2.joinable())
-				t2.join();
-			if (t3.joinable())
-				t3.join();
-			if (t4.joinable())
-				t4.join();
-			break;
-		}
 		int temp = toupper(_getch());
 		if (temp == 27) {
 			Game::isRunning = false;
@@ -237,11 +297,17 @@ void Game::startGame() {
 				t3.join();
 			if (t4.joinable())
 				t4.join();
+			if (t5.joinable())
+				t5.join();
 			break;
 		}
 		Game::player.undraw();
 		Game::player.move(char(temp));
 		Game::player.draw();
+		if (Game::fruitRequired == 0) {
+			Game::isRunning = false;
+			Game::gameControl.drawGate();
+		}
 	}
 	if (t1.joinable())
 		t1.join();
@@ -251,4 +317,22 @@ void Game::startGame() {
 		t3.join();
 	if (t4.joinable())
 		t4.join();
+	if (t5.joinable())
+		t5.join();
+	if (Game::fruitRequired == 0) {
+		Game::gameControl.levelUp();
+		system("cls");
+		startGame();
+	}
+}
+bool Game::playerEnterGate() {
+	if (fruitRequired > 0)
+		return false;
+	vector<point> listPoint = player.getListPoint();
+	for (int i = 0; i < listPoint.size(); i++) {
+		point tmp = listPoint[i];
+		if (tmp.getX() <= 50 || tmp.getX() >= 60 || tmp.getY() <= 1 || tmp.getY() >= 6)
+			return false;
+	}
+	return true;
 }

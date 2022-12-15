@@ -20,4 +20,5 @@ public:
 	void winAnimation();
 	void deathAnimation1();
 	void deathAnimation2();
+	bool canMove(char);
 };

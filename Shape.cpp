@@ -15,9 +15,18 @@ Shape::Shape()
 
 Shape::Shape(const Shape& temp)
 {
-	str[0] = temp.str[0];
-	str[1] = temp.str[1];
-	str[2] = temp.str[2];
+	str.clear();
+	for (int i = 0; i < temp.str.size(); i++)
+	{
+		str.push_back(temp.str[i]);
+	}
+}
+
+Shape& Shape::operator=(const Shape& temp)
+{
+	str.clear();
+	str = temp.str;
+	return *this;
 }
 
 vector<string> Shape::getShape()
@@ -27,6 +36,7 @@ vector<string> Shape::getShape()
 
 void Shape::setShape(vector<string> temp)
 {
+	str.clear();
 	str = temp;
 }
 

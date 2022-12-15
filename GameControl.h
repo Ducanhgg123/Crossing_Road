@@ -11,4 +11,8 @@ public:
 	void settingGame();
 	void drawInfoMenu();
 	void saveGame();
+	void drawScore();
+	void drawGate();
+	void levelUp();
+	void drawFruitRequired();
 };

@@ -15,6 +15,7 @@
     <ClCompile Include="Snowman.cpp" />
     <ClCompile Include="TrafficLight.cpp" />
     <ClCompile Include="Truck.cpp" />
+    <ClCompile Include="Fruit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Car.h" />
@@ -31,6 +32,7 @@
     <ClInclude Include="Snowman.h" />
     <ClInclude Include="TrafficLight.h" />
     <ClInclude Include="Truck.h" />
+    <ClInclude Include="Fruit.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

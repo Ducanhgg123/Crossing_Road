@@ -1,6 +1,5 @@
 #pragma once
 #include "point.h"
-#include <deque>
 
 class CrossLine
 {
@@ -13,4 +12,5 @@ public:
 	void draw();
 	void undraw();
 	bool isCollideWithPlayer(point p);
+	vector<point> getListPoint();
 };

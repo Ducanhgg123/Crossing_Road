@@ -145,6 +145,7 @@
     <ClCompile Include="Crossing_Road.cpp" />
     <ClCompile Include="CrossLine.cpp" />
     <ClCompile Include="Dog.cpp" />
+    <ClCompile Include="Fruit.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameControl.cpp" />
     <ClCompile Include="Line.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Car.h" />
     <ClInclude Include="CrossLine.h" />
     <ClInclude Include="Dog.h" />
+    <ClInclude Include="Fruit.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameControl.h" />
     <ClInclude Include="lib.h" />

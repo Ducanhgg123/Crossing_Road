@@ -11,6 +11,7 @@ public:
 	Shape();
 	Shape(const Shape&);
 	Shape(string[]);
+	Shape& operator=(const Shape&);
 	vector<string> getShape();
 	void setShape(vector<string> temp);
 	void changeToNormal();
