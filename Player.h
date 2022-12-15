@@ -18,4 +18,6 @@ public:
 	void isHit();
 	vector<point> getListPoint();
 	void winAnimation();
+	void deathAnimation1();
+	void deathAnimation2();
 };

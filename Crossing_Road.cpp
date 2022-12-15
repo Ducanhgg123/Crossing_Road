@@ -24,13 +24,6 @@ void fixConsoleWindow()
 	showConsoleCursor(false);
 
 }
-
-<<<<<<< HEAD
-=======
-void ConsoleColor(int c = 240)
-{
-
-}
 //void goToXY(int x, int y)
 //{
 //	COORD coord;
@@ -302,20 +295,23 @@ void ConsoleColor(int c = 240)
 //void ThreadMenu() {
 //
 //}
->>>>>>> b47ea306169d42ec06fb1440ca61bc85413d427c
+
 int main()
 {
 	TextColor(colorDefault);
 	fixConsoleWindow();
-<<<<<<< HEAD
-
+	//drawSomeThing();
 	//thread t1(ThreadCar);
 	//thread t2(ThreadTruck);
 	//thread t3(ThreadDog);
 	//thread t4(ThreadCrossLine);
 	//Game::player.draw();
-	Game::player.winAnimation();
-
+	while (1)
+	{
+		Game::player.winAnimation();
+		Game::player.deathAnimation1();
+		Game::player.deathAnimation2();
+	}
 	//while (Game::isRunning)
 	//{
 	//	if (Game::checkHit()) {
@@ -357,8 +353,6 @@ int main()
 	//	t3.join();
 	//if (t4.joinable())
 	//	t4.join();*/
-=======
-	Game::gameControl.drawMenu();
 	/*Game::gameControl.drawBorder();*/
 	/*Game::gameControl.drawMenu();*/
 	/*Game::gameControl.drawLeaderboard();*/
@@ -409,7 +403,5 @@ int main()
 		t3.join();
 	if (t4.joinable())
 		t4.join();*/
-	while (1);
->>>>>>> b47ea306169d42ec06fb1440ca61bc85413d427c
 	return 0;
 }

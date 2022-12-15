@@ -17,4 +17,5 @@ public:
 	void changeToLose();
 	void changeToWin1();
 	void changeToWin2();
+	void changeToSnowman();
 };

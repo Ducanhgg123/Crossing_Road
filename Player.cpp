@@ -59,40 +59,167 @@ vector<point> Player::getListPoint() {
 
 void Player::winAnimation()
 {
-	
-	for (int loop = 0; loop < 10; loop++)
+	draw();
+	Sleep(2000);
+	for (int loop = 0; loop < 3; loop++)
 	{
-		Sleep(1000);
 		vector<string> vShape;
-		if (loop % 2) {
-			undraw();
-			shape.changeToWin1();
-			vShape = shape.getShape();
-			int k = 0;
-			for (int i = 0; i < vShape.size(); i++)
+		undraw();
+		shape.changeToWin1();
+		vShape = shape.getShape();
+		int k = 0;
+		for (int i = 0; i < vShape.size(); i++)
+		{
+			for (int j = 0; j < vShape[i].size(); j++)
 			{
-				for (int j = 0; j < vShape[i].size(); j++)
-				{
-					p[k++].setC(vShape[i][j]);
-				}
+				p[k++].setC(vShape[i][j]);
 			}
-			draw();
-		}else{
-			undraw();
-			shape.changeToWin2();
-			vShape = shape.getShape();
-			
-			int k = 0;
-			for (int i = 0; i < vShape.size(); i++)
-			{
-				for (int j = 0; j < vShape[i].size(); j++)
-				{
-					p[k++].setC(vShape[i][j]);
-				}
-			}
-			draw();
 		}
+		draw();
+		Sleep(1000);
+		undraw();
+		shape.changeToWin2();
+		vShape = shape.getShape();
+			
+		k = 0;
+		for (int i = 0; i < vShape.size(); i++)
+		{
+			for (int j = 0; j < vShape[i].size(); j++)
+			{
+				p[k++].setC(vShape[i][j]);
+			}
+		}
+		draw();
+		Sleep(1000);
 		
 	}
 	undraw();
+	shape.changeToNormal();
+	vector<string> vShape;
+	vShape = shape.getShape();
+	int k = 0;
+	for (int i = 0; i < vShape.size(); i++)
+	{
+		for (int j = 0; j < vShape[i].size(); j++)
+		{
+			p[k++].setC(vShape[i][j]);
+		}
+	}
+}
+
+void Player::deathAnimation1()
+{
+	vector<string> vShape;
+	shape.changeToLose();
+	vShape = shape.getShape();
+	int k = 0;
+	for (int i = 0; i < vShape.size(); i++)
+	{
+		for (int j = 0; j < vShape[i].size(); j++)
+		{
+			p[k++].setC(vShape[i][j]);
+		}
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		Sleep(100);
+		undraw();
+		Sleep(100);
+		draw();
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		Sleep(50);
+		undraw();
+		Sleep(50);
+		draw();
+	}
+	undraw();
+	shape.changeToNormal();
+	vShape.clear();
+	vShape = shape.getShape();
+	k = 0;
+	for (int i = 0; i < vShape.size(); i++)
+	{
+		for (int j = 0; j < vShape[i].size(); j++)
+		{
+			p[k++].setC(vShape[i][j]);
+		}
+	}
+}
+
+void Player::deathAnimation2()
+{
+	int center = p.size() / 2;
+	char c = 'O';
+	int r = 4;
+	int sleepTime = 50;
+	for (int loop = 0; loop < 3; loop++)
+	{
+		goToXY(p[center].getX(), p[center].getY());
+		cout << c;
+		Sleep(sleepTime);
+		goToXY(p[center].getX(), p[center].getY());
+		cout << " ";
+		
+		int i = 1;
+		goToXY(p[center].getX() -i, p[center].getY());
+		cout << c;
+		goToXY(p[center].getX() , p[center].getY() - i);
+		cout << c;
+		goToXY(p[center].getX() + i, p[center].getY());
+		cout << c;
+		goToXY(p[center].getX(), p[center].getY() + i);
+		cout << c;
+		Sleep(sleepTime);
+		goToXY(p[center].getX() - i, p[center].getY());
+		cout << " ";
+		goToXY(p[center].getX(), p[center].getY() - i);
+		cout << " ";
+		goToXY(p[center].getX() + i, p[center].getY());
+		cout << " ";
+		goToXY(p[center].getX(), p[center].getY() + i);
+		cout << " ";
+		for (int j = 1; j < r; j++)
+		{
+			goToXY(p[center].getX() - i, p[center].getY() - i);
+			cout << c;
+			goToXY(p[center].getX() + i, p[center].getY() - i);
+			cout << c;
+			goToXY(p[center].getX() + i, p[center].getY() + i);
+			cout << c;
+			goToXY(p[center].getX() - i, p[center].getY() + i);
+			cout << c;
+			i = i+j;
+			goToXY(p[center].getX() - i, p[center].getY());
+			cout << c;
+			goToXY(p[center].getX(), p[center].getY() - i);
+			cout << c;
+			goToXY(p[center].getX() + i, p[center].getY());
+			cout << c;
+			goToXY(p[center].getX(), p[center].getY() + i);
+			cout << c;
+
+			i =i-j;
+			Sleep(sleepTime);
+			goToXY(p[center].getX() - i, p[center].getY() - i);
+			cout << " ";
+			goToXY(p[center].getX() + i, p[center].getY() - i);
+			cout << " ";
+			goToXY(p[center].getX() + i, p[center].getY() + i);
+			cout << " ";
+			goToXY(p[center].getX() - i, p[center].getY() + i);
+			cout << " ";
+			i = i + j;
+			goToXY(p[center].getX() - i, p[center].getY());
+			cout << " ";
+			goToXY(p[center].getX(), p[center].getY() - i);
+			cout << " ";
+			goToXY(p[center].getX() + i, p[center].getY());
+			cout << " ";
+			goToXY(p[center].getX(), p[center].getY() + i);
+			cout << " ";
+		}
+		Sleep(200);
+	}
 }
