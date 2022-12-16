@@ -25,6 +25,8 @@ void fixConsoleWindow()
 
 }
 
+<<<<<<< HEAD
+=======
 void ConsoleColor(int c = 240)
 {
 
@@ -300,10 +302,62 @@ void ConsoleColor(int c = 240)
 //void ThreadMenu() {
 //
 //}
+>>>>>>> b47ea306169d42ec06fb1440ca61bc85413d427c
 int main()
 {
 	TextColor(colorDefault);
 	fixConsoleWindow();
+<<<<<<< HEAD
+
+	//thread t1(ThreadCar);
+	//thread t2(ThreadTruck);
+	//thread t3(ThreadDog);
+	//thread t4(ThreadCrossLine);
+	//Game::player.draw();
+	Game::player.winAnimation();
+
+	//while (Game::isRunning)
+	//{
+	//	if (Game::checkHit()) {
+	//		Game::exitGame();
+	//		cout << "Hitted";
+	//		Game::isRunning = false;
+	//		/*if (t1.joinable())
+	//			t1.join();
+	//		if (t2.joinable())
+	//			t2.join();
+	//		if (t3.joinable())
+	//			t3.join();
+	//		if (t4.joinable())
+	//			t4.join();*/
+	//		return 0;
+	//	}
+	//	int temp = toupper(_getch());
+	//	if (temp == 27) {
+	//		Game::isRunning = false;
+	//		/*if (t1.joinable())
+	//			t1.join();
+	//		if (t2.joinable())
+	//			t2.join();
+	//		if (t3.joinable())
+	//			t3.join();
+	//		if (t4.joinable())
+	//			t4.join();*/
+	//		return 0;
+	//	}
+	//	Game::player.undraw();
+	//	Game::player.move(char(temp));
+	//	Game::player.draw();
+	//}
+	///*if (t1.joinable())
+	//	t1.join();
+	//if (t2.joinable())
+	//	t2.join();
+	//if (t3.joinable())
+	//	t3.join();
+	//if (t4.joinable())
+	//	t4.join();*/
+=======
 	Game::gameControl.drawMenu();
 	/*Game::gameControl.drawBorder();*/
 	/*Game::gameControl.drawMenu();*/
@@ -356,5 +410,6 @@ int main()
 	if (t4.joinable())
 		t4.join();*/
 	while (1);
+>>>>>>> b47ea306169d42ec06fb1440ca61bc85413d427c
 	return 0;
 }

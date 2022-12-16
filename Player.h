@@ -19,7 +19,10 @@ public:
 	void isHit();
 	vector<point> getListPoint();
 	void winAnimation();
+<<<<<<< HEAD
 	void deathAnimation();
 	void deathAnimation2();
 	bool canMove(char);
+=======
+>>>>>>> a7dc7579fe252822b262d27f2ae73f661b20a978
 };
