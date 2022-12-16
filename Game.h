@@ -20,24 +20,28 @@ public:
 	static Line dogLine;
 	static Line truckLine;
 	static Player player;
+	static Player playerTwo;
 	static vector<CrossLine> crossLine;
 	static Fruit fruit;
+	static vector<point> gate;
 	static bool isRunning;
 	static bool waiting;
+	static bool isInTwoPlayerMode;
 	static mutex m;
 	static GameControl gameControl;
 	
 public:
 	Game();
-	static bool checkHit();
-	static void isHit();
+	static bool checkHit(Player&);
+	static void isHit(Player&);
 	static void exitGame();
-	static bool isColide(Player, Obstacle*&);
-	static bool isColidePlayerWithFruit(Player, Fruit);
+	static bool isColide(Player&, Obstacle*&);
+	static bool isColidePlayerWithFruit(Player&, Fruit&);
 	static void drawRectangle(int, int, int, int,int);
 	static void startGame();
 	static bool isCollideWithFruit(point&);
-	static bool isCollideWithPlayer(point&);
+	static bool isCollideWithPlayer(point&, Player&);
 	static void restartGame();
-	static bool playerEnterGate();
+	static bool playerEnterGate(Player&);
+	static void generateGate();
 };

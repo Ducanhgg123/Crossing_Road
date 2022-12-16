@@ -12,9 +12,12 @@
 using namespace std;
 const int colorRed = 244;
 const int colorGreen = 250;
+const int colorDeepGreen = 242;
 const int colorDefault = 240;
 const int distanceBetweenLine = 7;
 const int activeColor = 15;
+const int gateLength = 8;
+const int gateWidth = 5;
 #define KEY_ESC 27
 #define KEY_DOWN 80
 #define KEY_UP 72

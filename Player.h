@@ -20,5 +20,6 @@ public:
 	void winAnimation();
 	void deathAnimation1();
 	void deathAnimation2();
-	bool canMove(char);
+	bool canMove(char, int);
+	bool isCollideGateBorder(point&, int, char);
 };

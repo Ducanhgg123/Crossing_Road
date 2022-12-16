@@ -17,10 +17,10 @@ point::point(int x, int y, char c) {
 	setC(c);
 }
 void point::setX(int x) {
-	this->x = max(0, x);
+	this->x =  x;
 }
 void point::setY(int y) {
-	this->y = max(0, y);
+	this->y =  y;
 }
 void point::setC(char c) {
 	this->c = c;

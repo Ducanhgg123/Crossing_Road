@@ -39,9 +39,9 @@ int TrafficLight::getStatus() {
 int TrafficLight::randomStatus()
 {
 	Game::m.lock();
-	status = rand() % 300;
+	this->status = rand() % 300;
 	Game::m.unlock();
-	return status;
+	return this->status;
 }
 
 void TrafficLight::changeColor()

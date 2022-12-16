@@ -299,23 +299,64 @@ void GameControl::drawInfoMenu() {
 	}
 	Game::m.unlock();
 }
-void GameControl::saveGame() {
+void GameControl::saveGame() 
+{
 
 }
-void GameControl::drawScore() {
+void GameControl::drawScore() 
+{
 	Game::m.lock();
 	goToXY(105, 5);
 	cout << "Your score : " << Game::score;
 	Game::m.unlock();
 }
-void GameControl::drawFruitRequired() {
+void GameControl::drawFruitRequired()
+{
 	Game::m.lock();
 	goToXY(110, 3);
 	cout << "Fruit required : " << Game::fruitRequired;
 	Game::m.unlock();
 }
-void GameControl::drawGate() {
-	drawRectangle(50, 1, 10, 5, colorGreen);
+void GameControl::drawGate() 
+{
+	//int gateLength = 8; //pixels
+	//int gateWidth = 5;//pixels
+	//int startPointGate = ((Game::endLine - Game::startLine + 1) / 2 - (gateLength / 2)) + Game::startLine;
+	//char gatePointHorizontalChar = 'X';
+	//char gatePointVerticalLeftChar = 'X';
+	//char gatePointVerticalRightChar = 'X';
+
+	//for (int i = 0; i < gateLength; i++)
+	//{
+	//	Game::m.lock();
+	//	goToXY(startPointGate + i, 0);
+	//	cout << gatePointHorizontalChar;
+	//	goToXY(startPointGate + i, 1);
+	//	cout << gatePointHorizontalChar;
+	//	Game::m.unlock();
+	//}
+	//for (int i = 0; i < gateWidth; i++)
+	//{
+	//	Game::m.lock();
+	//	goToXY(startPointGate, i);
+	//	cout << gatePointVerticalLeftChar;
+	//	Game::m.unlock();
+	//}
+	//for (int i = 0; i < gateWidth; i++)
+	//{
+	//	Game::m.lock();
+	//	goToXY(startPointGate + gateLength -1, i);
+	//	cout << gatePointVerticalRightChar;
+	//	Game::m.unlock();
+	//}
+
+	for (int i = 0; i < Game::gate.size(); i++)
+	{
+		Game::m.lock();
+		goToXY(Game::gate[i].getX(), Game::gate[i].getY());
+		cout << Game::gate[i].getC();
+		Game::m.unlock();
+	}
 }
 void GameControl::levelUp() {
 	int level = Game::level;

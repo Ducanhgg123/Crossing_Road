@@ -44,6 +44,7 @@ Line& Line::operator=(const Line& temp)
 	{
 		line.push_back(temp.line[i]->clone());
 	}
+	this->trafficLight = temp.trafficLight;
 	return *this;
 }
 

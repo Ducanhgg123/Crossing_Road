@@ -39,44 +39,102 @@ void Player::undraw() {
 	}
 }
 void Player::move(char c) {
-	int hop = 3;
-	if (canMove(c))
+	int hop = 2;
+	if (canMove(c, hop))
 	{
 		for (int i = 0; i < p.size(); i++) 
 		{
-			if ((c == 'W' || c == 'w') && p[i].getY() >= 3) {
+			if ((c == 'W' || c == 'w'))
 				p[i].setY(p[i].getY() - hop);
-			}
-			if ((c == 'S' || c == 's') && p[i].getY() <= 32)
+			if ((c == 'S' || c == 's'))
 				p[i].setY(p[i].getY() + hop);
-			if ((c == 'A' || c == 'a') && p[i].getX() >= 3)
+			if ((c == 'A' || c == 'a'))
 				p[i].setX(p[i].getX() - hop);
-			if ((c == 'D' || c == 'd') && p[i].getX() <= 102)
+			if ((c == 'D' || c == 'd'))
 				p[i].setX(p[i].getX() + hop);
 		}
 	}
 }
 
-bool Player::canMove(char c)
+bool Player::canMove(char c, int hop)
 {
-	int hop = 3;
-	for (int i = 0; i < p.size(); i++) {
-		if ((c == 'W' || c == 'w'))
-			if (!(p[i].getY() >= 3))
-				return false;
-		if ((c == 'S' || c == 's') )
-			if (!(p[i].getY() <= 32))
-				return false;
-		if ((c == 'A' || c == 'a'))
-			if (!(p[i].getX() >= 3))
-				return false;
-		if ((c == 'D' || c == 'd') )
-			if (!(p[i].getX() <= 105))
-				return false;
+	if (Game::gate.size() > 0)
+	{
+		for (int i = 0; i < p.size(); i++)
+		{
+			if ((c == 'W' || c == 'w'))
+				if ((p[i].getY() - hop) <= 1 || isCollideGateBorder(p[i], hop, c))
+				{
+					return false;
+				}
+
+			if ((c == 'S' || c == 's'))
+				if ((p[i].getY() + hop) >= 30 || isCollideGateBorder(p[i], hop, c))
+				{
+					return false;
+				}
+			if ((c == 'A' || c == 'a'))
+				if ((p[i].getX() - hop) <= 0 || isCollideGateBorder(p[i], hop, c))
+				{
+					return false;
+				}
+			if ((c == 'D' || c == 'd'))
+				if ((p[i].getX() + hop) >= 105 || isCollideGateBorder(p[i], hop, c))
+				{
+					return false;
+				}
+		}
+	}
+	else
+	{
+		for (int i = 0; i < p.size(); i++)
+		{
+			if ((c == 'W' || c == 'w'))
+				if ((p[i].getY() - hop) <= 0) 
+				{
+					return false;
+				}
+
+			if ((c == 'S' || c == 's'))
+				if ((p[i].getY() + hop) >= 30)
+				{
+					return false;
+				}
+			if ((c == 'A' || c == 'a'))
+				if ((p[i].getX() - hop) <= 0)
+				{
+					return false;
+				}
+			if ((c == 'D' || c == 'd'))
+				if ((p[i].getX() + hop) >= 105)
+				{
+					return false;
+				}
+		}
 	}
 	return true;
 }
 
+bool Player::isCollideGateBorder(point& temp, int hop, char c)
+{
+	vector<point> gate = Game::gate;
+	for (int i = 0; i < gate.size(); i++)
+	{
+		if ((c == 'W' || c == 'w'))
+			if (temp.getX() == gate[i].getX() && (temp.getY()-hop) == gate[i].getY())
+				return true;
+		if ((c == 'S' || c == 's'))
+			if (temp.getX() == gate[i].getX() && (temp.getY()+hop) == gate[i].getY())
+				return true;
+		if ((c == 'A' || c == 'a'))
+			if ((temp.getX()-hop) == gate[i].getX() && temp.getY() == gate[i].getY())
+				return true;
+		if ((c == 'D' || c == 'd'))
+			if ((temp.getX()+hop) == gate[i].getX() && temp.getY() == gate[i].getY())
+				return true;
+	}
+	return false;
+}
 bool Player::isAlive() {
 	return status;
 }
@@ -136,7 +194,6 @@ void Player::winAnimation()
 		}
 	}
 }
-
 void Player::deathAnimation1()
 {
 	vector<string> vShape;

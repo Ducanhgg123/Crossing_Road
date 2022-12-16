@@ -25,11 +25,43 @@ void fixConsoleWindow()
 
 }
 
+void drawSomething() {
+	int gateLength = 8; //pixels
+	int gateWidth = 5;//pixels
+	int startPointGate = ((Game::endLine - Game::startLine + 1) / 2 - (gateLength / 2)) + Game::startLine;
+	char gatePointHorizontalChar = 'X';
+	char gatePointVerticalLeftChar = 'X';
+	char gatePointVerticalRightChar = 'X';
+
+	for (int i = 0; i < gateLength; i++)
+	{
+		Game::m.lock();
+		goToXY(startPointGate + i, 0);
+		cout << gatePointHorizontalChar;
+		goToXY(startPointGate + i, 1);
+		cout << gatePointHorizontalChar;
+		Game::m.unlock();
+	}
+	for (int i = 0; i < gateWidth; i++)
+	{
+		Game::m.lock();
+		goToXY(startPointGate, i);
+		cout << gatePointVerticalLeftChar;
+		Game::m.unlock();
+	}
+	for (int i = 0; i < gateWidth; i++)
+	{
+		Game::m.lock();
+		goToXY(startPointGate + gateLength - 1, i);
+		cout << gatePointVerticalRightChar;
+		Game::m.unlock();
+	}
+}
+
 int main()
 {
 	TextColor(colorDefault);
 	fixConsoleWindow();
-
-Game::startGame();
+	Game::startGame();
 	return 0;
 }

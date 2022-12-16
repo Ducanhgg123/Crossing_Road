@@ -82,7 +82,7 @@ void Fruit::draw()
 void Fruit::undraw()
 {
 	for (int i = 0; i < p.size(); i++)
-		if (!(Game::isCollideWithPlayer(p[i])))
+		if (!(Game::isCollideWithPlayer(p[i], Game::player)) && !(Game::isCollideWithPlayer(p[i], Game::playerTwo)))
 		{
 			{
 				Game::m.lock();
