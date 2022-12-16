@@ -19,4 +19,5 @@ public:
 	vector<point> getListPoint();
 	virtual Obstacle* clone();
 	virtual void makeSound();
+	friend ostream& operator<<(ostream& out, Obstacle* ob);
 };

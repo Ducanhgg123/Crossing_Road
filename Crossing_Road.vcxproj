@@ -116,6 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,12 +145,14 @@
     <ClCompile Include="Crossing_Road.cpp" />
     <ClCompile Include="CrossLine.cpp" />
     <ClCompile Include="Dog.cpp" />
+    <ClCompile Include="Fruit.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameControl.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="point.cpp" />
+    <ClCompile Include="Shape.cpp" />
     <ClCompile Include="Snowman.cpp" />
     <ClCompile Include="TrafficLight.cpp" />
     <ClCompile Include="Truck.cpp" />
@@ -158,6 +161,7 @@
     <ClInclude Include="Car.h" />
     <ClInclude Include="CrossLine.h" />
     <ClInclude Include="Dog.h" />
+    <ClInclude Include="Fruit.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameControl.h" />
     <ClInclude Include="lib.h" />
@@ -165,6 +169,7 @@
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="point.h" />
+    <ClInclude Include="Shape.h" />
     <ClInclude Include="Snowman.h" />
     <ClInclude Include="TrafficLight.h" />
     <ClInclude Include="Truck.h" />

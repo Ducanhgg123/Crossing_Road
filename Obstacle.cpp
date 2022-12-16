@@ -16,18 +16,23 @@ bool Obstacle::reachEndPoint(int x) {
 void Obstacle::draw() {
 	for (int i = 0; i < p.size(); i++) {
 		Game::m.lock();
-		goToXY(p[i].getX(), p[i].getY());
-		cout << p[i].getC();
+		if (!(Game::isCollideWithFruit(p[i])))
+		{
+			goToXY(p[i].getX(), p[i].getY());
+			cout << p[i].getC();
+		}
 		Game::m.unlock();
 	}
 }
 void Obstacle::undraw() {
-	for (int i = 0; i < p.size(); i++) {
-		Game::m.lock();
-		goToXY(p[i].getX(), p[i].getY());
-		cout << " ";
-		Game::m.unlock();
-	}
+	for (int i = 0; i < p.size(); i++)
+		if (!Game::isCollideWithFruit(p[i]))
+		{
+			Game::m.lock();
+			goToXY(p[i].getX(), p[i].getY());
+			cout << " ";
+			Game::m.unlock();
+		}
 }
 void Obstacle::undrawBack() {
 	int back[3];
@@ -36,10 +41,12 @@ void Obstacle::undrawBack() {
 	back[2] = back[1] + shape[1].size();
 	for (int i = 0; i < 3; i++) {
 		point tmp = p[back[i]];
-		Game::m.lock();
-		goToXY(tmp.getX(), tmp.getY());
-		cout << " ";
-		Game::m.unlock();
+		if (!Game::isCollideWithFruit(tmp)) {
+			Game::m.lock();
+			goToXY(tmp.getX(), tmp.getY());
+			cout << " ";
+			Game::m.unlock();
+		}
 	}
 }
 int Obstacle::getDistanceFromStart() {
@@ -56,3 +63,13 @@ Obstacle* Obstacle::clone() {
 	return new Obstacle(*this);
 }
 void Obstacle::makeSound(){}
+ostream& operator<<(ostream& out, Obstacle* ob) {
+	out << ob->p.size() << endl;
+	out << ob->OFFSET_X << " " << ob->OFFSET_Y << endl;
+	vector<point> listPoint = ob->p;
+	for (int i = 0; i < listPoint.size(); i++) {
+		out << listPoint[i].getX() << " " << listPoint[i].getY() << '\n';
+	}
+	out << ob->direction << " " << ob->distance << '\n';
+	return out;
+}

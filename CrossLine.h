@@ -13,4 +13,5 @@ public:
 	void draw();
 	void undraw();
 	bool isCollideWithPlayer(point p);
+	vector<point> getListPoint();
 };

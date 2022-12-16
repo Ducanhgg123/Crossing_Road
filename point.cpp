@@ -16,6 +16,11 @@ point::point(int x, int y, char c) {
 	setY(y);
 	setC(c);
 }
+point::point(const point& p) {
+	setX(p.x);
+	setY(p.y);
+	setC(p.c);
+}
 void point::setX(int x) {
 	this->x = max(0, x);
 }
