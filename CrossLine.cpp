@@ -36,7 +36,10 @@ bool CrossLine::isCollideWithPlayer(point p) {
 	}
 	return false;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2f71eac0c59b756bf0d314b0a20abf05f975a29c
 vector<point> CrossLine::getListPoint()
 {
 	vector<point> temp;

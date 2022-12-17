@@ -19,6 +19,7 @@ void Obstacle::draw() {
 		Game::m.lock();
 		if (!(Game::isCollideWithFruit(p[i])))
 		{
+<<<<<<< HEAD
 			if (this->direction > 0)
 			{
 				if (p[i].getX() > Game::startLine)
@@ -35,11 +36,16 @@ void Obstacle::draw() {
 					cout << p[i].getC();
 				}
 			}
+=======
+			goToXY(p[i].getX(), p[i].getY());
+			cout << p[i].getC();
+>>>>>>> 2f71eac0c59b756bf0d314b0a20abf05f975a29c
 		}
 		Game::m.unlock();
 	}
 }
 void Obstacle::undraw() {
+<<<<<<< HEAD
 	for (int i = 0; i < p.size(); i++) 
 		if (!Game::isCollideWithFruit(p[i]))
 		{
@@ -63,6 +69,14 @@ void Obstacle::undraw() {
 					}
 				}
 			}
+=======
+	for (int i = 0; i < p.size(); i++)
+		if (!Game::isCollideWithFruit(p[i]))
+		{
+			Game::m.lock();
+			goToXY(p[i].getX(), p[i].getY());
+			cout << " ";
+>>>>>>> 2f71eac0c59b756bf0d314b0a20abf05f975a29c
 			Game::m.unlock();
 		}
 }
@@ -74,6 +88,7 @@ void Obstacle::undrawBack() {
 	for (int i = 0; i < 3; i++) {
 		point tmp = p[back[i]];
 		if (!Game::isCollideWithFruit(tmp)) {
+<<<<<<< HEAD
 			if (this->direction > 0)
 			{
 				if (p[i].getX() > Game::startLine)
@@ -94,6 +109,12 @@ void Obstacle::undrawBack() {
 					Game::m.unlock();
 				}
 			}
+=======
+			Game::m.lock();
+			goToXY(tmp.getX(), tmp.getY());
+			cout << " ";
+			Game::m.unlock();
+>>>>>>> 2f71eac0c59b756bf0d314b0a20abf05f975a29c
 		}
 	}
 }
@@ -111,3 +132,13 @@ Obstacle* Obstacle::clone() {
 	return new Obstacle(*this);
 }
 void Obstacle::makeSound(){}
+ostream& operator<<(ostream& out, Obstacle* ob) {
+	out << ob->p.size() << endl;
+	out << ob->OFFSET_X << " " << ob->OFFSET_Y << endl;
+	vector<point> listPoint = ob->p;
+	for (int i = 0; i < listPoint.size(); i++) {
+		out << listPoint[i].getX() << " " << listPoint[i].getY() << '\n';
+	}
+	out << ob->direction << " " << ob->distance << '\n';
+	return out;
+}
