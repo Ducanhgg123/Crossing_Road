@@ -40,55 +40,107 @@ void Shape::setShape(vector<string> temp)
 	str = temp;
 }
 
-void Shape::changeToNormal()
+void Shape::changeToNormal(int playerIndex)
 {
-	str.clear();
-	string tmpStr[3];
-	tmpStr[0] = " ('') ";
-	tmpStr[1] = "//[]\\\\";
-	tmpStr[2] = "_/  \\_";
-	for (int i = 0; i < 3; i++)
+	if (playerIndex == 1)
 	{
-		str.push_back(tmpStr[i]);
+		str.clear();
+		string tmpStr[3];
+		tmpStr[0] = " ('') ";
+		tmpStr[1] = "//[]\\\\";
+		tmpStr[2] = "_/  \\_";
+		for (int i = 0; i < 3; i++)
+		{
+			str.push_back(tmpStr[i]);
+		}
+	}
+	else
+	{
+		changeToSnowman();
 	}
 }
 
-void Shape::changeToWin1()
+void Shape::changeToWin1(int playerIndex)
 {
-	str.clear();
-	string tmpStr[3];
-	tmpStr[0] = "\\(^^)/";
-	tmpStr[1] = "/ [] \\";
-	tmpStr[2] = " /  \\ ";
-	for (int i = 0; i < 3; i++)
+	if (playerIndex == 1)
 	{
-		str.push_back(tmpStr[i]);
+		str.clear();
+		string tmpStr[3];
+		tmpStr[0] = "*(^^)*";
+		tmpStr[1] = " <[]> ";
+		tmpStr[2] = " /  \\ ";
+		for (int i = 0; i < 3; i++)
+		{
+			str.push_back(tmpStr[i]);
+		}
+	}
+	else
+	{
+		str.clear();
+		string tmpStr[3];
+		tmpStr[0] = " (^^) ";
+		tmpStr[1] = "</..\\>";
+		tmpStr[2] = "( :: )";
+		for (int i = 0; i < 3; i++)
+		{
+			str.push_back(tmpStr[i]);
+		}
 	}
 }
 
-void Shape::changeToWin2()
+void Shape::changeToWin2(int playerIndex)
 {
-	str.clear();
-	string tmpStr[3];
-	tmpStr[0] = " (^^) ";
-	tmpStr[1] = "/<[]>\\";
-	tmpStr[2] = "_/  \\_";
-	for (int i = 0; i < 3; i++)
+	if (playerIndex == 1)
 	{
-		str.push_back(tmpStr[i]);
+		str.clear();
+		string tmpStr[3];
+		tmpStr[0] = " (^^) ";
+		tmpStr[1] = " /[]\\ ";
+		tmpStr[2] = "_/  \\_";
+		for (int i = 0; i < 3; i++)
+		{
+			str.push_back(tmpStr[i]);
+		}
+	}
+	else
+	{
+		str.clear();
+		string tmpStr[3];
+		tmpStr[0] = "*(^^)*";
+		tmpStr[1] = "Y/..\\Y";
+		tmpStr[2] = "( :: )";
+		for (int i = 0; i < 3; i++)
+		{
+			str.push_back(tmpStr[i]);
+		}
 	}
 }
 
-void Shape::changeToLose()
+void Shape::changeToLose(int playerIndex)
 {
-	str.clear();
-	string tmpStr[3];
-	tmpStr[0] = " (TT) ";
-	tmpStr[1] = "\\/[]\\G";
-	tmpStr[2] = "_/  \\_";
-	for (int i = 0; i < 3; i++)
+	if (playerIndex == 1)
 	{
-		str.push_back(tmpStr[i]);
+		str.clear();
+		string tmpStr[3];
+		tmpStr[0] = " (TT) ";
+		tmpStr[1] = "//[]\\\\";
+		tmpStr[2] = "_/  \\_";
+		for (int i = 0; i < 3; i++)
+		{
+			str.push_back(tmpStr[i]);
+		}
+	}
+	else
+	{
+		str.clear();
+		string tmpStr[3];
+		tmpStr[0] = "~(TT)~";
+		tmpStr[1] = "Y/..\\Y";
+		tmpStr[2] = "( :: )";
+		for (int i = 0; i < 3; i++)
+		{
+			str.push_back(tmpStr[i]);
+		}
 	}
 }
 
@@ -96,7 +148,7 @@ void Shape::changeToSnowman()
 {
 	str.clear();
 	string tmpStr[3];
-	tmpStr[0] = " (**) ";
+	tmpStr[0] = " ('') ";
 	tmpStr[1] = "Y/..\\Y";
 	tmpStr[2] = "( :: )";
 	for (int i = 0; i < 3; i++)

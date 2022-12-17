@@ -16,11 +16,13 @@ const int colorDeepGreen = 242;
 const int colorDefault = 240;
 const int distanceBetweenLine = 7;
 const int activeColor = 15;
-const int gateLength = 8;
-const int gateWidth = 5;
+const int gateLength = 10;
+const int gateWidth = 6;
 #define KEY_ESC 27
 #define KEY_DOWN 80
 #define KEY_UP 72
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
 #define KEY_ESC 27
 #define KEY_ENTER 13
 

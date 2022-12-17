@@ -62,6 +62,18 @@ int main()
 {
 	TextColor(colorDefault);
 	fixConsoleWindow();
-	Game::startGame();
+	//Game::startGame();
+	while (1)
+	{
+		Game::player.winAnimation(1);
+		/*Game::player.deathAnimation1(1);
+		Game::player.deathAnimation2();
+		Game::playerTwo.winAnimation(2);
+		Game::playerTwo.deathAnimation1(2);
+		Game::playerTwo.deathAnimation2();*/
+	}
+	/*Game::generateGate();
+	Game::gameControl.drawGate();
+	Game::playerEnterGate(Game::player);*/
 	return 0;
 }

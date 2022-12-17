@@ -10,8 +10,8 @@ Line Game::truckLine = Line(1, 2*distanceBetweenLine+2);
 Line Game::dogLine = Line(104, 3*distanceBetweenLine+2);
 vector<CrossLine> Game::crossLine = vector<CrossLine>();
 vector<point> Game::gate = vector<point>();
-Player Game::player = Player(65, 30);
-Player Game::playerTwo = Player(81, 30);
+Player Game::player = Player(65, 30,1);
+Player Game::playerTwo = Player(91, 30,2);
 Fruit Game::fruit = Fruit();
 bool Game::isRunning = 1;
 bool Game::waiting = 0;
@@ -28,8 +28,8 @@ Game::Game() {
 	carLine = Line();
 	truckLine = Line();
 	dogLine = Line();
-	player = Player(65, 5 * distanceBetweenLine);
-	playerTwo = Player(81, 5 * distanceBetweenLine);
+	player = Player(65, 5 * distanceBetweenLine, 1);
+	playerTwo = Player(91, 5 * distanceBetweenLine, 2);
 	isRunning = 1;
 }
 void Game::restartGame() {
@@ -41,8 +41,8 @@ void Game::restartGame() {
 	carLine = Line();
 	truckLine = Line();
 	dogLine = Line();
-	player = Player(65, 5 * distanceBetweenLine);
-	playerTwo = Player(81, 5 * distanceBetweenLine);
+	player = Player(65, 5 * distanceBetweenLine, 1);
+	playerTwo = Player(91, 5 * distanceBetweenLine, 2);
 	isRunning = 1;
 }
 bool Game::isColide(Player& player, Obstacle*& obstacle) {
@@ -268,29 +268,140 @@ void ThreadCrossLine()
 void ThreadFruit()
 {
 	Game::fruit.generateNewFruit();
+	bool gateDrawed = false;
+
 	while (Game::isRunning)
 	{
-		Game::gameControl.drawScore();
-		if (!Game::isInTwoPlayerMode)
+		////
+		//Game::gameControl.drawScore();
+		//if (!Game::isInTwoPlayerMode)
+		//{
+		//	Game::gameControl.drawFruitRequired();
+		//}
+		////
+		//Game::isInTwoPlayerMode = true;
+		////
+		if (Game::isInTwoPlayerMode)
 		{
-			Game::gameControl.drawFruitRequired();
+			if (Game::isColidePlayerWithFruit(Game::player, Game::fruit))
+			{
+				Game::player.setScore(Game::player.getScore() + 100);
+				Game::fruit.collisionHandle();
+			}
+			if (Game::isColidePlayerWithFruit(Game::playerTwo, Game::fruit))
+			{
+				Game::player.setScore(Game::player.getScore() + 100);
+				Game::fruit.collisionHandle();
+			}
 		}
-		if (Game::isColidePlayerWithFruit(Game::player, Game::fruit) && Game::fruitRequired>0 && Game::isColidePlayerWithFruit(Game::playerTwo, Game::fruit))
+		else
 		{
-			Game::fruitRequired--;
-			Game::score += Game::level * 100;
-			Game::fruit.collisionHandle();
+			if (Game::fruitRequired > 0)
+			{
+				if (Game::isColidePlayerWithFruit(Game::player, Game::fruit))
+				{
+					Game::fruitRequired--;
+					Game::score += Game::level * 100;
+					Game::fruit.collisionHandle();
+				}
+			}
+			else
+			{
+				if (gateDrawed == false)
+				{
+					gateDrawed = true;
+					Game::generateGate();
+					Game::gameControl.drawGate();
+				}
+				if (Game::playerEnterGate(Game::player))
+				{
+					Game::player.winAnimation(1);
+				}
+			}
 		}
 	}
 }
+
+void Game::generateGate()
+{
+	int startPointGate = 1 + ((Game::endLine - Game::startLine + 1) / 2 - (gateLength / 2)) + Game::startLine;
+	char gateCornerLeft = char(201);
+	char gateCornerRight = char(187);
+	char gatePointHorizontalChar = char(205);
+	char gatePointVerticalLeftChar = char(186);
+	char gatePointVerticalRightChar = char(186);
+
+	for (int i = 0; i < gateLength; i++)
+	{
+		if (i == 0)
+		{
+			Game::gate.push_back(point(startPointGate + i, 0, gateCornerLeft));
+		}
+		else if (i == gateLength - 1)
+		{
+			Game::gate.push_back(point(startPointGate + i, 0, gateCornerRight));
+		}
+		else
+		{
+			Game::gate.push_back(point(startPointGate + i, 0, gatePointHorizontalChar));
+		}
+	}
+	for (int i = 0; i < gateLength; i++)
+	{
+		if (i == 0)
+		{
+			Game::gate.push_back(point(startPointGate + i, 1, gatePointVerticalLeftChar));
+		}
+		else if (i == gateLength - 1)
+		{
+			Game::gate.push_back(point(startPointGate + i, 1, gatePointVerticalRightChar));
+		}
+		else
+		{
+			Game::gate.push_back(point(startPointGate + i, 1, '$'));
+		}
+	}
+	for (int i = 2; i < gateWidth; i++)
+	{
+		Game::gate.push_back(point(startPointGate, i, gatePointVerticalLeftChar));
+	}
+	for (int i = 2; i < gateWidth; i++)
+	{
+		Game::gate.push_back(point(startPointGate + gateLength - 1, i, gatePointVerticalRightChar));
+	}
+}
+
+bool Game::playerEnterGate(Player& player) {
+	vector<point> listPlayer = player.getListPoint();
+	point temp = Game::gate[0];
+	int startX = temp.getX() + 1;
+	int endX = temp.getX() + gateLength - 2;
+	int startY = temp.getY() + 2;
+	int endY = temp.getY() + gateWidth - 1;
+	for (int i = 0; i < listPlayer.size(); i++) {
+		if (!(listPlayer[i].getX() >= startX && listPlayer[i].getX() <= endX))
+		{
+			return false;
+		}
+		if (!(listPlayer[i].getY() >= startY && listPlayer[i].getY() <= endY))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
 void Game::startGame() {
+	Game::player.draw();
+	/*Game::playerTwo.draw();*/
+	Game::isInTwoPlayerMode = false;
+
 	thread t1(ThreadCar);
 	thread t2(ThreadTruck);
 	thread t3(ThreadDog);
 	thread t4(ThreadCrossLine);
 	thread t5(ThreadFruit);
-	Game::player.draw();
-	Game::playerTwo.draw();
+	
 	while (Game::isRunning)
 	{
 		int temp = toupper(_getch());
@@ -309,25 +420,12 @@ void Game::startGame() {
 			break;
 		}
 		Game::player.undraw();
-		Game::player.move(char(temp));
+		Game::player.move(char(temp), 1);
 		Game::player.draw();
 
-		Game::playerTwo.undraw();
-		Game::playerTwo.move(char(temp));
-		Game::playerTwo.draw();
-
-		if (Game::fruitRequired == 0) {
-			/*Game::isRunning = false;*/
-			Game::generateGate();
-			Game::gameControl.drawGate();
-			if (Game::playerEnterGate(player) && Game::playerEnterGate(playerTwo))
-			{
-				Game::m.lock();
-				goToXY(0, 0);
-				cout << "hahahaha";
-				Game::m.unlock();
-			}
-		}
+		/*Game::playerTwo.undraw();
+		Game::playerTwo.move(char(temp), 2);
+		Game::playerTwo.draw();*/
 	}
 	if (t1.joinable())
 		t1.join();
@@ -341,50 +439,11 @@ void Game::startGame() {
 		t5.join();
 	if (Game::fruitRequired == 0 ) 
 	{
-		if (Game::playerEnterGate(player) && Game::playerEnterGate(playerTwo))
+		if (Game::playerEnterGate(player))
 		{
 			Game::gameControl.levelUp();
 			system("cls");
 			startGame();
 		}
-	}
-}
-bool Game::playerEnterGate(Player& player) {
-	if (fruitRequired > 0)
-		return false;
-	vector<point> listPlayer = player.getListPoint();
-	point temp = Game::gate[0];
-	int startX = temp.getX() + 1;
-	int endX = temp.getX() + gateLength - 2;
-	int startY = temp.getY() + 2;
-	int endY = temp.getY() + gateWidth - 1;
-	for (int i = 0; i < listPlayer.size(); i++) {
-		if (!(listPlayer[i].getX() >= startX && listPlayer[i].getX() <= endX))
-			return false;
-		if (!(listPlayer[i].getY() >= startY && listPlayer[i].getY() <= endY))
-			return false;
-	}
-	return true;
-}
-
-void Game::generateGate()
-{
-	int startPointGate =1+ ((Game::endLine - Game::startLine + 1) / 2 - (gateLength / 2)) + Game::startLine;
-	char gatePointHorizontalChar = 'X';
-	char gatePointVerticalLeftChar = 'X';
-	char gatePointVerticalRightChar = 'X';
-
-	for (int i = 0; i < gateLength; i++)
-	{
-		Game::gate.push_back(point(startPointGate + i, 0, gatePointHorizontalChar));
-		Game::gate.push_back(point(startPointGate + i, 1, gatePointHorizontalChar));
-	}
-	for (int i = 0; i < gateWidth; i++)
-	{
-		Game::gate.push_back(point(startPointGate, i, gatePointVerticalLeftChar));
-	}
-	for (int i = 0; i < gateWidth; i++)
-	{
-		Game::gate.push_back(point(startPointGate + gateLength - 1, i, gatePointVerticalRightChar));
 	}
 }

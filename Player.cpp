@@ -3,15 +3,27 @@
 
 Player::Player() 
 {
+	//score = 0;
 	OFFSET_X = 0;
 	OFFSET_Y = 0;
 }
-Player::Player(int OFFSET_X, int OFFSET_Y) 
+Player::Player(int OFFSET_X, int OFFSET_Y, int playerIndex) 
 {
+	//score = 0
 	this->OFFSET_X = OFFSET_X;
 	this->OFFSET_Y = OFFSET_Y;
+	this->playerIndex = playerIndex;
 	status = 1;
-	vector<string> listShape = shape.getShape();
+	vector<string> listShape;
+	if (playerIndex == 1)
+	{
+		listShape = shape.getShape();
+	}
+	else
+	{
+		shape.changeToSnowman();
+		listShape = shape.getShape();
+	}
 	for (int i = 0; i < listShape.size(); i++)
 		for (int j = 0; j < listShape[i].size(); j++)
 		{
@@ -38,20 +50,36 @@ void Player::undraw() {
 		Game::m.unlock();
 	}
 }
-void Player::move(char c) {
+void Player::move(char c, int playerIndex) 
+{
 	int hop = 2;
 	if (canMove(c, hop))
 	{
-		for (int i = 0; i < p.size(); i++) 
+		for (int i = 0; i < p.size(); i++)
 		{
-			if ((c == 'W' || c == 'w'))
-				p[i].setY(p[i].getY() - hop);
-			if ((c == 'S' || c == 's'))
-				p[i].setY(p[i].getY() + hop);
-			if ((c == 'A' || c == 'a'))
-				p[i].setX(p[i].getX() - hop);
-			if ((c == 'D' || c == 'd'))
-				p[i].setX(p[i].getX() + hop);
+			if (playerIndex == 1)
+			{
+				if ((c == 'W' || c == 'w'))
+					p[i].setY(p[i].getY() - hop);
+				if ((c == 'S' || c == 's'))
+					p[i].setY(p[i].getY() + hop);
+				if ((c == 'A' || c == 'a'))
+					p[i].setX(p[i].getX() - hop);
+				if ((c == 'D' || c == 'd'))
+					p[i].setX(p[i].getX() + hop);
+			}
+			if (playerIndex == 2)
+			{
+				//PlayerTwo
+				if ((c == KEY_UP))
+					p[i].setY(p[i].getY() - hop);
+				if ((c == KEY_DOWN))
+					p[i].setY(p[i].getY() + hop);
+				if ((c == KEY_LEFT))
+					p[i].setX(p[i].getX() - hop);
+				if ((c == KEY_RIGHT))
+					p[i].setX(p[i].getX() + hop);
+			}
 		}
 	}
 }
@@ -89,8 +117,9 @@ bool Player::canMove(char c, int hop)
 	{
 		for (int i = 0; i < p.size(); i++)
 		{
+			//PlayerOne
 			if ((c == 'W' || c == 'w'))
-				if ((p[i].getY() - hop) <= 0) 
+				if ((p[i].getY() - hop) <= 0)
 				{
 					return false;
 				}
@@ -106,6 +135,28 @@ bool Player::canMove(char c, int hop)
 					return false;
 				}
 			if ((c == 'D' || c == 'd'))
+				if ((p[i].getX() + hop) >= 105)
+				{
+					return false;
+				}
+			//PlayerTwo
+			if ((c == KEY_UP))
+				if ((p[i].getY() - hop) <= 0)
+				{
+					return false;
+				}
+
+			if ((c == KEY_DOWN))
+				if ((p[i].getY() + hop) >= 30)
+				{
+					return false;
+				}
+			if ((c == KEY_LEFT))
+				if ((p[i].getX() - hop) <= 0)
+				{
+					return false;
+				}
+			if ((c == KEY_RIGHT))
 				if ((p[i].getX() + hop) >= 105)
 				{
 					return false;
@@ -145,15 +196,16 @@ vector<point> Player::getListPoint() {
 	return p;
 }
 
-void Player::winAnimation()
+void Player::winAnimation(int playerIndex)
 {
 	draw();
-	Sleep(2000);
+	Sleep(500);
+	int colorIndex = 240;
 	for (int loop = 0; loop < 3; loop++)
 	{
 		vector<string> vShape;
 		undraw();
-		shape.changeToWin1();
+		shape.changeToWin1(playerIndex);
 		vShape = shape.getShape();
 		int k = 0;
 		for (int i = 0; i < vShape.size(); i++)
@@ -163,12 +215,14 @@ void Player::winAnimation()
 				p[k++].setC(vShape[i][j]);
 			}
 		}
+		TextColor(colorIndex);
 		draw();
-		Sleep(1000);
+		TextColor(colorDefault);
+		Sleep(500);
 		undraw();
-		shape.changeToWin2();
+		shape.changeToWin2(playerIndex);
 		vShape = shape.getShape();
-			
+
 		k = 0;
 		for (int i = 0; i < vShape.size(); i++)
 		{
@@ -177,12 +231,18 @@ void Player::winAnimation()
 				p[k++].setC(vShape[i][j]);
 			}
 		}
+		TextColor(colorIndex);
 		draw();
-		Sleep(1000);
-		
+		TextColor(colorDefault);
+		Sleep(500);
+		if (colorIndex < 253)
+		{
+			colorIndex++;
+		}
 	}
+	
 	undraw();
-	shape.changeToNormal();
+	shape.changeToNormal(playerIndex);
 	vector<string> vShape;
 	vShape = shape.getShape();
 	int k = 0;
@@ -194,10 +254,10 @@ void Player::winAnimation()
 		}
 	}
 }
-void Player::deathAnimation1()
+void Player::deathAnimation1(int playerIndex)
 {
 	vector<string> vShape;
-	shape.changeToLose();
+	shape.changeToLose(playerIndex);
 	vShape = shape.getShape();
 	int k = 0;
 	for (int i = 0; i < vShape.size(); i++)
@@ -222,7 +282,7 @@ void Player::deathAnimation1()
 		draw();
 	}
 	undraw();
-	shape.changeToNormal();
+	shape.changeToNormal(playerIndex);
 	vShape.clear();
 	vShape = shape.getShape();
 	k = 0;
@@ -309,4 +369,13 @@ void Player::deathAnimation2()
 		}
 		Sleep(200);
 	}
+}
+int Player::getScore()
+{
+	return score;
+}
+
+void Player::setScore(int score)
+{
+	this->score = score;
 }

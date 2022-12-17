@@ -118,6 +118,7 @@ bool Fruit::isCollide()
 			}
 		}
 	}
+
 	vector<point> ListPlayer = Game::player.getListPoint();
 	for (int j = 0; j < p.size(); j++)
 	{
@@ -127,6 +128,16 @@ bool Fruit::isCollide()
 				return true;
 		}
 	}
+	vector<point> ListPlayerTwo = Game::playerTwo.getListPoint();
+	for (int j = 0; j < p.size(); j++)
+	{
+		for (int k = 0; k < ListPlayerTwo.size(); k++)
+		{
+			if (p[j].getX() == ListPlayerTwo[k].getX() && p[j].getY() == ListPlayerTwo[k].getY())
+				return true;
+		}
+	}
+
 	return false;
 }
 

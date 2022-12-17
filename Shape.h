@@ -14,9 +14,9 @@ public:
 	Shape& operator=(const Shape&);
 	vector<string> getShape();
 	void setShape(vector<string> temp);
-	void changeToNormal();
-	void changeToLose();
-	void changeToWin1();
-	void changeToWin2();
+	void changeToNormal(int);
+	void changeToLose(int);
+	void changeToWin1(int);
+	void changeToWin2(int);
 	void changeToSnowman();
 };

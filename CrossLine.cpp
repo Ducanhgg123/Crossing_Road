@@ -16,20 +16,23 @@ CrossLine::CrossLine(int x, int y,int length)
 void CrossLine::draw()
 {
 	for (int i = 0; i < p.size();i++)
-		if (!isCollideWithPlayer(p[i]))
-	{
-		Game::m.lock();
-		goToXY(p[i].getX(), p[i].getY());
-		cout << p[i].getC();
-		Game::m.unlock();
-	}
+		if (!isCollideWithPlayer(p[i], Game::player) && !isCollideWithPlayer(p[i], Game::playerTwo))
+		{
+			Game::m.lock();
+			goToXY(p[i].getX(), p[i].getY());
+			cout << p[i].getC();
+			Game::m.unlock();
+		}
 }
+
 int CrossLine::getLength()
 {
 	return length;
 }
-bool CrossLine::isCollideWithPlayer(point p) {
-	vector<point>listPoint = Game::player.getListPoint();
+
+bool CrossLine::isCollideWithPlayer(point p, Player player)
+{
+	vector<point>listPoint = player.getListPoint();
 	for (int i = 0; i < listPoint.size(); i++) {
 		if (p.getX() == listPoint[i].getX() && p.getY() == listPoint[i].getY())
 			return true;
