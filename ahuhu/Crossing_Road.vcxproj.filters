@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Car.cpp" />
+    <ClCompile Include="Crossing_Road.cpp" />
+    <ClCompile Include="CrossLine.cpp" />
+    <ClCompile Include="Dog.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameControl.cpp" />
+    <ClCompile Include="Line.cpp" />
+    <ClCompile Include="Obstacle.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="point.cpp" />
+    <ClCompile Include="Shape.cpp" />
+    <ClCompile Include="Snowman.cpp" />
+    <ClCompile Include="TrafficLight.cpp" />
+    <ClCompile Include="Truck.cpp" />
+    <ClCompile Include="Fruit.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Car.h" />
+    <ClInclude Include="CrossLine.h" />
+    <ClInclude Include="Dog.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameControl.h" />
+    <ClInclude Include="lib.h" />
+    <ClInclude Include="Line.h" />
+    <ClInclude Include="Obstacle.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="point.h" />
+    <ClInclude Include="Shape.h" />
+    <ClInclude Include="Snowman.h" />
+    <ClInclude Include="TrafficLight.h" />
+    <ClInclude Include="Truck.h" />
+    <ClInclude Include="Fruit.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
+  </ItemGroup>
+</Project>
