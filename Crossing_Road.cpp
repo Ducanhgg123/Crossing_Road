@@ -302,12 +302,11 @@ void ConsoleColor(int c = 240)
 //void ThreadMenu() {
 //
 //}
->>>>>>> b47ea306169d42ec06fb1440ca61bc85413d427c
+
 int main()
 {
 	TextColor(colorDefault);
 	fixConsoleWindow();
-<<<<<<< HEAD
 
 	//thread t1(ThreadCar);
 	//thread t2(ThreadTruck);
@@ -357,7 +356,6 @@ int main()
 	//	t3.join();
 	//if (t4.joinable())
 	//	t4.join();*/
-=======
 	Game::gameControl.drawMenu();
 	/*Game::gameControl.drawBorder();*/
 	/*Game::gameControl.drawMenu();*/
@@ -409,7 +407,5 @@ int main()
 		t3.join();
 	if (t4.joinable())
 		t4.join();*/
-	while (1);
->>>>>>> b47ea306169d42ec06fb1440ca61bc85413d427c
 	return 0;
 }
