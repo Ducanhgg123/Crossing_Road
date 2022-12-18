@@ -1,6 +1,5 @@
 #include "Shape.h"
 
-
 Shape::Shape()
 {
 	string tmpStr[3];

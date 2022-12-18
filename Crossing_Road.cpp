@@ -24,7 +24,6 @@ void fixConsoleWindow()
 	showConsoleCursor(false);
 
 }
-
 void drawSomething() {
 	int gateLength = 8; //pixels
 	int gateWidth = 5;//pixels
@@ -57,7 +56,6 @@ void drawSomething() {
 		Game::m.unlock();
 	}
 }
-
 int main()
 {
 	TextColor(colorDefault);
@@ -66,11 +64,11 @@ int main()
 	while (1)
 	{
 		Game::player.winAnimation(1);
-		/*Game::player.deathAnimation1(1);
+		Game::player.deathAnimation1(1);
 		Game::player.deathAnimation2();
 		Game::playerTwo.winAnimation(2);
 		Game::playerTwo.deathAnimation1(2);
-		Game::playerTwo.deathAnimation2();*/
+		Game::playerTwo.deathAnimation2();
 	}
 	/*Game::generateGate();
 	Game::gameControl.drawGate();

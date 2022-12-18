@@ -423,9 +423,9 @@ void Game::startGame() {
 		Game::player.move(char(temp), 1);
 		Game::player.draw();
 
-		/*Game::playerTwo.undraw();
+		Game::playerTwo.undraw();
 		Game::playerTwo.move(char(temp), 2);
-		Game::playerTwo.draw();*/
+		Game::playerTwo.draw();
 	}
 	if (t1.joinable())
 		t1.join();

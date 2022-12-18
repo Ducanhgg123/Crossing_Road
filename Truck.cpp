@@ -49,7 +49,8 @@ void ThreadTruckSound() {
 		Sleep(2000);
 	}
 }
-void Truck::makeSound() {
+void Truck::makeSound() 
+{
 	thread sound(ThreadTruckSound);
 	sound.detach();
 }
