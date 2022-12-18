@@ -9,8 +9,17 @@
 #include <windows.h>
 #include <mutex>
 #include <map>
+#include <fstream>
+#include <string>
+#include <filesystem>
 using namespace std;
+namespace fs = std::filesystem;
 const int colorRed = 244;
+const int colorShit = 246;
+const int colorCyan = 249;
+const int colorYellow = 252;
+const int colorBoldBlue = 241;
+const int colorBlue = 243;
 const int colorGreen = 250;
 const int colorDeepGreen = 242;
 const int colorDefault = 240;

@@ -6,6 +6,7 @@ Player::Player()
 	//score = 0;
 	OFFSET_X = 0;
 	OFFSET_Y = 0;
+<<<<<<< HEAD
 }
 Player::Player(int OFFSET_X, int OFFSET_Y, int playerIndex) 
 {
@@ -14,6 +15,7 @@ Player::Player(int OFFSET_X, int OFFSET_Y, int playerIndex)
 	this->OFFSET_Y = OFFSET_Y;
 	this->playerIndex = playerIndex;
 	status = 1;
+<<<<<<< HEAD
 	vector<string> listShape;
 	if (playerIndex == 1)
 	{
@@ -24,6 +26,12 @@ Player::Player(int OFFSET_X, int OFFSET_Y, int playerIndex)
 		shape.changeToSnowman();
 		listShape = shape.getShape();
 	}
+=======
+=======
+	shape = Shape();
+>>>>>>> 2f71eac0c59b756bf0d314b0a20abf05f975a29c
+	vector<string> listShape = shape.getShape();
+>>>>>>> fdb4b171e8ae21e71034e42e9187fdc21519fe2f
 	for (int i = 0; i < listShape.size(); i++)
 		for (int j = 0; j < listShape[i].size(); j++)
 		{
@@ -31,8 +39,41 @@ Player::Player(int OFFSET_X, int OFFSET_Y, int playerIndex)
 			p.push_back(temp);
 		}
 }
+<<<<<<< HEAD
 void Player::draw() 
 {
+=======
+Player::Player(int OFFSET_X, int OFFSET_Y) {
+	this->OFFSET_X = OFFSET_X;
+	this->OFFSET_Y = OFFSET_Y;
+	status = 1;
+<<<<<<< HEAD
+	shape = Shape();
+=======
+>>>>>>> a7dc7579fe252822b262d27f2ae73f661b20a978
+	vector<string> listShape = shape.getShape();
+	for (int i = 0; i < listShape.size(); i++)
+		for (int j = 0; j < listShape[i].size(); j++)
+		{
+			point temp(OFFSET_X + j, OFFSET_Y + i, listShape[i][j]);
+			p.push_back(temp);
+		}
+}
+Player::Player(vector<point> listPoint) {
+	shape.changeToNormal();
+	p.clear();
+	vector<string> listShape = shape.getShape();
+	int k = 0;
+	for (int i = 0; i < listShape.size(); i++)
+		for (int j = 0; j < listShape[i].size(); j++)
+		{
+			p.push_back(listPoint[k]);
+			p[k].setC(listShape[i][j]);
+			k++;
+		}
+}
+void Player::draw() {
+>>>>>>> 2f71eac0c59b756bf0d314b0a20abf05f975a29c
 	//setShape1();
 	for (int i = 0; i < p.size(); i++) 
 	{
@@ -50,13 +91,19 @@ void Player::undraw() {
 		Game::m.unlock();
 	}
 }
+<<<<<<< HEAD
 void Player::move(char c, int playerIndex) 
 {
+=======
+void Player::move(char c) {
+<<<<<<< HEAD
+>>>>>>> fdb4b171e8ae21e71034e42e9187fdc21519fe2f
 	int hop = 2;
 	if (canMove(c, hop))
 	{
 		for (int i = 0; i < p.size(); i++)
 		{
+<<<<<<< HEAD
 			if (playerIndex == 1)
 			{
 				if ((c == 'W' || c == 'w'))
@@ -80,6 +127,26 @@ void Player::move(char c, int playerIndex)
 				if ((c == KEY_RIGHT))
 					p[i].setX(p[i].getX() + hop);
 			}
+=======
+			if ((c == 'W' || c == 'w'))
+				p[i].setY(p[i].getY() - hop);
+=======
+	int hop = 3;
+	if (canMove(c))
+	{
+		for (int i = 0; i < p.size(); i++)
+		{
+			if ((c == 'W' || c == 'w')) {
+				p[i].setY(p[i].getY() - hop);
+			}
+>>>>>>> 2f71eac0c59b756bf0d314b0a20abf05f975a29c
+			if ((c == 'S' || c == 's'))
+				p[i].setY(p[i].getY() + hop);
+			if ((c == 'A' || c == 'a'))
+				p[i].setX(p[i].getX() - hop);
+			if ((c == 'D' || c == 'd'))
+				p[i].setX(p[i].getX() + hop);
+>>>>>>> fdb4b171e8ae21e71034e42e9187fdc21519fe2f
 		}
 	}
 }
@@ -198,10 +265,203 @@ vector<point> Player::getListPoint() {
 
 void Player::winAnimation(int playerIndex)
 {
+<<<<<<< HEAD
 	draw();
 	Sleep(500);
 	int colorIndex = 240;
 	for (int loop = 0; loop < 3; loop++)
+=======
+<<<<<<< HEAD
+	draw();
+	Sleep(2000);
+	for (int loop = 0; loop < 3; loop++)
+	{
+		vector<string> vShape;
+		undraw();
+		shape.changeToWin1();
+		vShape = shape.getShape();
+		int k = 0;
+		for (int i = 0; i < vShape.size(); i++)
+		{
+			for (int j = 0; j < vShape[i].size(); j++)
+			{
+				p[k++].setC(vShape[i][j]);
+			}
+		}
+		draw();
+		Sleep(1000);
+		undraw();
+		shape.changeToWin2();
+		vShape = shape.getShape();
+
+		k = 0;
+		for (int i = 0; i < vShape.size(); i++)
+		{
+			for (int j = 0; j < vShape[i].size(); j++)
+			{
+				p[k++].setC(vShape[i][j]);
+			}
+		}
+		draw();
+		Sleep(1000);
+
+	}
+	undraw();
+	shape.changeToNormal();
+	vector<string> vShape;
+	vShape = shape.getShape();
+	int k = 0;
+	for (int i = 0; i < vShape.size(); i++)
+	{
+		for (int j = 0; j < vShape[i].size(); j++)
+		{
+			p[k++].setC(vShape[i][j]);
+		}
+	}
+}
+
+void Player::deathAnimation()
+{
+	vector<string> vShape;
+	shape.changeToLose();
+	vShape = shape.getShape();
+	int k = 0;
+	for (int i = 0; i < vShape.size(); i++)
+	{
+		for (int j = 0; j < vShape[i].size(); j++)
+		{
+			p[k++].setC(vShape[i][j]);
+		}
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		Sleep(100);
+		undraw();
+		Sleep(100);
+		draw();
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		Sleep(50);
+		undraw();
+		Sleep(50);
+		draw();
+	}
+	undraw();
+	shape.changeToNormal();
+	vShape.clear();
+	vShape = shape.getShape();
+	k = 0;
+	for (int i = 0; i < vShape.size(); i++)
+	{
+		for (int j = 0; j < vShape[i].size(); j++)
+		{
+			p[k++].setC(vShape[i][j]);
+		}
+	}
+	deathAnimation2();
+}
+
+void Player::deathAnimation2()
+{
+	int center = p.size() / 2;
+	char c = 'O';
+	int r = 4;
+	int sleepTime = 25;
+	for (int loop = 0; loop < 3; loop++)
+	{
+		Game::m.lock();
+		goToXY(p[center].getX(), p[center].getY());
+		cout << c;
+		Sleep(sleepTime);
+		goToXY(p[center].getX(), p[center].getY());
+		cout << " ";
+
+		int i = 1;
+		goToXY(p[center].getX() - i, p[center].getY());
+		cout << c;
+		goToXY(p[center].getX(), p[center].getY() - i);
+		cout << c;
+		goToXY(p[center].getX() + i, p[center].getY());
+		cout << c;
+		goToXY(p[center].getX(), p[center].getY() + i);
+		cout << c;
+		Sleep(sleepTime);
+		goToXY(p[center].getX() - i, p[center].getY());
+		cout << " ";
+		goToXY(p[center].getX(), p[center].getY() - i);
+		cout << " ";
+		goToXY(p[center].getX() + i, p[center].getY());
+		cout << " ";
+		goToXY(p[center].getX(), p[center].getY() + i);
+		cout << " ";
+		for (int j = 1; j < r; j++)
+		{
+			goToXY(p[center].getX() - i, p[center].getY() - i);
+			cout << c;
+			goToXY(p[center].getX() + i, p[center].getY() - i);
+			cout << c;
+			goToXY(p[center].getX() + i, p[center].getY() + i);
+			cout << c;
+			goToXY(p[center].getX() - i, p[center].getY() + i);
+			cout << c;
+			i = i + j;
+			goToXY(p[center].getX() - i, p[center].getY());
+			cout << c;
+			goToXY(p[center].getX(), p[center].getY() - i);
+			cout << c;
+			goToXY(p[center].getX() + i, p[center].getY());
+			cout << c;
+			goToXY(p[center].getX(), p[center].getY() + i);
+			cout << c;
+
+			i = i - j;
+			Sleep(sleepTime);
+			goToXY(p[center].getX() - i, p[center].getY() - i);
+			cout << " ";
+			goToXY(p[center].getX() + i, p[center].getY() - i);
+			cout << " ";
+			goToXY(p[center].getX() + i, p[center].getY() + i);
+			cout << " ";
+			goToXY(p[center].getX() - i, p[center].getY() + i);
+			cout << " ";
+			i = i + j;
+			goToXY(p[center].getX() - i, p[center].getY());
+			cout << " ";
+			goToXY(p[center].getX(), p[center].getY() - i);
+			cout << " ";
+			goToXY(p[center].getX() + i, p[center].getY());
+			cout << " ";
+			goToXY(p[center].getX(), p[center].getY() + i);
+			cout << " ";
+		}
+		Game::m.unlock();
+		Sleep(sleepTime);
+		shape.changeToNormal();
+	}
+}
+bool Player::canMove(char c)
+{
+	int hop = 3;
+	for (int i = 0; i < p.size(); i++) {
+		if ((c == 'W' || c == 'w'))
+			if (!(p[i].getY() >= 3))
+				return false;
+		if ((c == 'S' || c == 's'))
+			if (!(p[i].getY() <= 29))
+				return false;
+		if ((c == 'A' || c == 'a'))
+			if (!(p[i].getX() >= 5))
+				return false;
+		if ((c == 'D' || c == 'd'))
+			if (!(p[i].getX() <= 115))
+				return false;
+	}
+	return true;
+=======
+	
+	for (int loop = 0; loop < 10; loop++)
+>>>>>>> 2f71eac0c59b756bf0d314b0a20abf05f975a29c
 	{
 		vector<string> vShape;
 		undraw();
@@ -242,7 +502,12 @@ void Player::winAnimation(int playerIndex)
 	}
 	
 	undraw();
+<<<<<<< HEAD
 	shape.changeToNormal(playerIndex);
+=======
+<<<<<<< HEAD
+	shape.changeToNormal();
+>>>>>>> fdb4b171e8ae21e71034e42e9187fdc21519fe2f
 	vector<string> vShape;
 	vShape = shape.getShape();
 	int k = 0;
@@ -369,6 +634,7 @@ void Player::deathAnimation2()
 		}
 		Sleep(200);
 	}
+<<<<<<< HEAD
 }
 int Player::getScore()
 {
@@ -379,3 +645,9 @@ void Player::setScore(int score)
 {
 	this->score = score;
 }
+=======
+=======
+>>>>>>> a7dc7579fe252822b262d27f2ae73f661b20a978
+>>>>>>> 2f71eac0c59b756bf0d314b0a20abf05f975a29c
+}
+>>>>>>> fdb4b171e8ae21e71034e42e9187fdc21519fe2f

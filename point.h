@@ -9,6 +9,7 @@ private:
 public:
 	point();
 	point(int, int, char);
+	point(const point&);
 	void setX(int);
 	void setY(int);
 	void setC(char);

@@ -27,6 +27,24 @@ Dog::Dog(const Dog& dog) {
 	p.clear();
 	p = dog.p;
 }
+Dog::Dog(int OFFSET_X,int OFFSET_Y,vector<point> listPoint, int direction, int distance) {
+	p.clear();
+	this->OFFSET_X = OFFSET_X;
+	this->OFFSET_Y = OFFSET_Y;
+	shape[0] = "(___()'`;";
+	shape[1] = "/,    /`";
+	shape[2] = "\\\\\"--\\\\";
+	int k = 0;
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < shape[i].size(); j++)
+		{
+			p.push_back(point(listPoint[k]));
+			p[k].setC(shape[i][j]);
+			k++;
+		}
+	this->direction = direction;
+	this->distance = distance;
+}
 Obstacle* Dog::clone() {
 	return new Dog(*this);
 }
@@ -39,4 +57,13 @@ void ThreadDogSound() {
 void Dog::makeSound() {
 	thread sound(ThreadDogSound);
 	sound.detach();
+}
+ostream& operator<<(ostream& out, const Dog& dog) {
+	out << dog.p.size() << endl;
+	vector<point> listPoint = dog.p;
+	for (int i = 0; i < listPoint.size(); i++) {
+		out << listPoint[i].getX() << " " << listPoint[i].getY() << '\n';
+	}
+	out << dog.direction << " " << dog.distance << '\n';
+	return out;
 }

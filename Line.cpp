@@ -92,7 +92,7 @@ TrafficLight Line::getTrafficLight()
 
 void Line::move()
 {
-	for (int i = 0; i < line.size(); i++)
+	for (int i = 0; i < line.size() && !Game::isPaused && Game::isRunning; i++)
 	{
 		line[i]->undrawBack();
 		line[i]->move();
